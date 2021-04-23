@@ -139,9 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Crazy8.h" />
     <ClInclude Include="deckOfCards.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CardGames.cpp" />
     <ClCompile Include="gameOfWar.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
