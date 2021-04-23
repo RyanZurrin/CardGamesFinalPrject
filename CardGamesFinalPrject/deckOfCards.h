@@ -9,6 +9,15 @@ struct card
 	char suit;
 	char face;
 	card * next;
+
+	//overide just checks suit and face, not address
+	bool operator==(card a){
+		if (a.suit == suit && a.face == face)
+			return true;
+		else
+			return false;
+	}
+
 };
 
 class deckOfCards
@@ -19,7 +28,8 @@ class deckOfCards
 	public:
 		deckOfCards(int = 0);
 		~deckOfCards();
-		std::string takeCard();
+		//string takeCard(); // changing this so i can return a card not just a string
+		card takeCard();
 		bool shuffleDeck();
 		void displayDeck();//function only used for testing purposes
 	private:
@@ -36,24 +46,38 @@ inline deckOfCards::deckOfCards(int decks)
 	loadDeck();
 }
 //////////////////////////////////////////////////////////////////////////////
-inline std::string deckOfCards::takeCard()
-{
-	std::string str="  ";
-	card *temp;
+//inline std::string deckOfCards::takeCard()
+//{
+//	std::string str="  ";
+//	card *temp;
+//
+//	if(topCard == NULL)
+//		return  "";
+//
+//	str[0] = topCard->face;
+//	str[1] = topCard->suit;
+//	str[2] = '\n';
+//
+//	temp = topCard;
+//	topCard = topCard->next;
+//	delete temp;
+//
+//	return str;
+//}
 
-	if(topCard == NULL)
-		return  "";
-
-	str[0] = topCard->face;
-	str[1] = topCard->suit;
-	str[2] = '\n';
+inline card deckOfCards::takeCard(){
+	std::string str = "  ";
+	card* temp;
+	card rC;
 
 	temp = topCard;
 	topCard = topCard->next;
+	rC = *temp;
 	delete temp;
 
-	return str;
+	return 	rC;
 }
+
 //////////////////////////////////////////////////////////////////////////////
 inline void deckOfCards::displayDeck()
 {
@@ -61,7 +85,6 @@ inline void deckOfCards::displayDeck()
 		std::cout << scan->face <<  scan->suit << "  ";
 	std::cout << std::endl << std::endl;
 }
-
 //////////////////////////////////////////////////////////////////////////////
 inline bool deckOfCards::shuffleDeck()
 {
