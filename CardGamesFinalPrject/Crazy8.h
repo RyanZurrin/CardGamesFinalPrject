@@ -1,23 +1,33 @@
 #pragma once
-#include "cards.h"
+#include "deckOfCards.h"
 
+
+using namespace std;
 class Player{
 public:
-	Player();
+	Player(int handSize, bool hidden = false);
 
 	~Player();
 
 private:
 	int handSize;
+	bool hidden;
 	card* hand;
 
 
 };
 
-Player::Player(){
+Player::Player(int handSize, bool hidden){
+	this->hidden = hidden;
+	this->handSize = handSize;
+
+	hand = new card[handSize];
 }
 
 Player::~Player(){
+
+	delete[] hand;
+
 }
 
 
@@ -28,7 +38,7 @@ public:
 	~CrazyEight();
 
 private:
-	deckOfCards *deck;
+	deckOfCards* deck;
 	int numplayers;
 	void play();
 
@@ -38,10 +48,8 @@ private:
 
 
 
-}
-
 CrazyEight::CrazyEight(int numPlayers){
-	
+
 
 	if (numPlayers == 1){
 		cout << "Sorry you cant play by yourself at the moment" << endl;
