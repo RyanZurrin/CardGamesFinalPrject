@@ -145,7 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CardGames.cpp" />
-    <ClCompile Include="gameOfWar.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
