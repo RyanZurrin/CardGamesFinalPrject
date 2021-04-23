@@ -1,26 +1,37 @@
 #include "Crazy8.h"
 #include <iostream>
-using namespace std;
+
 
 int main(){
-
 
 	int game = 1;
 	int playerCount = 2;
 	//cout << "What Game?";
 	//cin >> game;
 
+<<<<<<< HEAD
 
 	if (game==1){
 	//	cout << "players?" << endl;
 	//	cin >> playerCount;
+=======
+	int game = 1;
+	int playerCount = 2;
+	cout << "What Game?";
+	//cin >> game;
+
+	if (game==1){
+		//Julian's Game Crazy Eights
+		//cout << "players?" << endl;
+		//cin >> playerCount;
+>>>>>>> master
 		CrazyEight c8(playerCount);
 
 	} else	if (game == 2){
-		//add your game
+		//Josh's game
 	}
 	else if (game == 3){
-		//add your game
+		//Ryan's game
 	}
 
 
