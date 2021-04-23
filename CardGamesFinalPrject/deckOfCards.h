@@ -47,35 +47,22 @@ inline deckOfCards::deckOfCards(int decks)
 }
 //////////////////////////////////////////////////////////////////////////////
 //inline std::string deckOfCards::takeCard()
-//{
-//	std::string str="  ";
-//	card *temp;
-//
-//	if(topCard == NULL)
-//		return  "";
-//
-//	str[0] = topCard->face;
-//	str[1] = topCard->suit;
-//	str[2] = '\n';
-//
-//	temp = topCard;
-//	topCard = topCard->next;
-//	delete temp;
-//
-//	return str;
-//}
+{
+	std::string str="  ";
+	card *temp;
 
-inline card deckOfCards::takeCard(){
-	std::string str = "  ";
-	card* temp;
-	card rC;
+	if(topCard == NULL)
+		return  "";
+
+	str[0] = topCard->face;
+	str[1] = topCard->suit;
+	str[2] = '\n';
 
 	temp = topCard;
 	topCard = topCard->next;
-	rC = *temp;
 	delete temp;
 
-	return 	rC;
+	return str;
 }
 
 //////////////////////////////////////////////////////////////////////////////
