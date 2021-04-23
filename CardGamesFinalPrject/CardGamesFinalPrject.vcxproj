@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Crazy8.h" />
     <ClInclude Include="deckOfCards.h" />
+    <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CardGames.cpp" />

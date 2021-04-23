@@ -1,70 +1,7 @@
 #pragma once
 #include "deckOfCards.h"
+#include "player.h"
 
-
-using namespace std;
-class Player{
-public:
-
-	Player();
-	Player(int handSize, bool hidden = false);
-	~Player();
-
-	bool addCard(card card);
-	bool removeCard(card card);
-	void showTopCard();
-	void showAllCards();
-
-private:
-	int handSize;
-	int cardCount;
-	bool hidden;
-	card* hand;
-
-
-};
-
-bool Player::addCard(card card){
-	
-	if (cardCount < handSize)	{
-		hand[cardCount++] = card;
-		return true;
-	}
-	return false;
-}
-
-void Player::showAllCards(){
-	for (int i = 0; i < cardCount; i++)	{
-		cout << hand[i].face<< hand[i].suit << endl;
-	}
-}
-
-
-
-Player::Player(int handSize, bool hidden){
-	this->hidden = hidden;
-	this->handSize = handSize;
-	this->cardCount = 0;
-
-	hand = new card[handSize];
-
-
-}
-
-Player::Player(){
-	this->hidden = false;
-	this->handSize = 7;
-	this->cardCount = 0;
-
-	hand = new card[handSize];
-
-}
-
-Player::~Player(){
-
-	delete[] hand;
-
-}
 
 
 
@@ -75,32 +12,65 @@ public:
 
 private:
 	deckOfCards* deck;
-	int numplayers;
+	int numPlayers;
 	void play();
 	Player *players;
 	void dealCards();
 
 };
 
+void CrazyEight::play(){
+	cout << "Play" << endl;
+	dealCards();
+	players[0].showAllCards();
+}
+
 void CrazyEight::dealCards(){
-	players[0].addCard(deck->takeCard());
+	cout << "Deal" << endl;
+	for (int p = 0; p < numPlayers; p++)		{
+	//	cout << "Player " << p << endl;
+		for (int i = 0; i < players[p].getHandSize(); i++){
+		//	cout << "Add" << endl;
+			players[0].addCard(deck->takeCard());
+		}
+
+	}
 
 }
 
 CrazyEight::CrazyEight(int numPlayers){
+	this->numPlayers = numPlayers;
 
+	players = new Player[numPlayers];
+	
+	int handSize =7;
+	int numDecks =1;
 
-	if (numPlayers == 1){
+	if (this->numPlayers == 1){
 		cout << "Sorry you cant play by yourself at the moment" << endl;
-	} else if (numPlayers == 2){
-		deck = new deckOfCards(1);
-	} else if (numPlayers < 20){
-		deck = new deckOfCards(2);
+	} else if (this->numPlayers == 2){
+		numDecks = 1;
+		handSize = 7;
+	} else if (this->numPlayers < 20){
+		numDecks = 2;
+		handSize = 5;
 	} else{
-		deck = new deckOfCards(3);
+		numDecks = 3;
+		handSize = 5;
 	}
 
-	players = new Player[numplayers];
+	deck = new deckOfCards(numDecks);
+	
+	deck->shuffleDeck();
+
+
+
+	for (int i = 0; i < numPlayers; i++)		{
+		players[i].createPlayer(handSize , 52*numDecks);
+	}
+
+	play();
+
 
 }
 
