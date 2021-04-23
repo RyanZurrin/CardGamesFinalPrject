@@ -3,7 +3,7 @@ typedef deckOfCards doc;
 
 
 using namespace std;
-
+/*
 int main(){
 	doc test;
 	test.displayDeck();
@@ -13,3 +13,4 @@ int main(){
 
 	return 0;
 }
+*/
