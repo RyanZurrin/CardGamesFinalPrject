@@ -1,6 +1,7 @@
 #pragma once
 
 #include "queue.h"
+#include "player.h"
 typedef deckOfCards doc;
 
 class War:
@@ -11,13 +12,14 @@ public:
 	War(int players);
 	int selectPlayers();
 	void dealCards();
-	bool takeCard();
+	bool compare(string p1, string p2);
+	void run();
 
 private:
 
 	deckOfCards* cards;
 	int numPlayers;
-	Queue* cardPiles[4];
+	Queue<string>* cardPiles[4];
 
 };
 
@@ -27,10 +29,10 @@ private:
 inline War::War()
 {
 	numPlayers = 0;//simulation game
-	cardPiles[0] = new Queue;
-	cardPiles[1] = new Queue;
-	cardPiles[2] = new Queue;
-	cardPiles[3] = new Queue;
+	cardPiles[0] = new Queue<string>;
+	cardPiles[1] = new Queue<string>;
+	cardPiles[2] = new Queue<string>;
+	cardPiles[3] = new Queue<string>;
 	cards = new deckOfCards(1);
 	cards->shuffleDeck();
 }
@@ -39,10 +41,10 @@ inline War::War(int players)
 {
 	numPlayers = players;
 	numPlayers = 0;//simulation game
-	cardPiles[0] = new Queue;
-	cardPiles[1] = new Queue;
-	cardPiles[2] = new Queue;
-	cardPiles[3] = new Queue;
+	cardPiles[0] = new Queue<string>;
+	cardPiles[1] = new Queue<string>;
+	cardPiles[2] = new Queue<string>;
+	cardPiles[3] = new Queue<string>;
 	cards = new deckOfCards(1);
 	cards->shuffleDeck();
 
@@ -55,33 +57,33 @@ inline int War::selectPlayers()
 
 inline void War::dealCards()
 {
+	//cards->shuffleDeck();
 	for (int i = 0; i < 52; i++)
 	{
-		if (i%2==0)
+		if (i % 2 == 0)
 		{
-			//cardPiles[0]->enQueue(cards->takeCard());
+			//cards->shuffleDeck();
+			cardPiles[0]->enQueue(cards->takeCard());
 		}
+		else
+			//cards->shuffleDeck();
+			cardPiles[1]->enQueue(cards->takeCard());
 	}
+	std::cout << "player 1's cards" << endl;
+	cardPiles[0]->displayQueue();
+
+	std::cout << "player 2's cards" << endl;
+	cardPiles[1]->displayQueue();
 }
 
-inline bool War::takeCard()
+inline bool War::compare(string p1, string p2)
 {
-	//std::string str="  ";
-	card *temp;
-	card* toHand;
-
-	//if (cards->getTopCard() == NULL)
-		return  false;
-	//else
-		//toHand = getTopCard();
-
-	//str[0] = topCard->face;
-	//str[1] = topCard->suit;
-	//str[2] = '\n';
-
-	//temp = topCard;
-	//topCard = topCard->next;
-	//delete temp;
-
-	//return str;
+	return false;
 }
+
+inline void War::run()
+{
+	cards->displayDeck();
+	dealCards();
+}
+

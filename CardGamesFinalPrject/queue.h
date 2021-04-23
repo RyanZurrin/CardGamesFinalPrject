@@ -5,12 +5,13 @@
 #include <iomanip>
 #include <iostream>
 #include "deckOfCards.h"
+template<class T>
 struct Node
 {
-	card c_;
-	Node* next;
+	T c_;
+	Node<T>* next;
 };
-
+template<class T>
 class Queue
 {
 public:
@@ -36,33 +37,33 @@ public:
 	/// </summary>
 	/// <param name="num">The number.</param>
 	/// <returns>true if successfully enqueues: false if else</returns>
-	bool enQueue(card c);
+	bool enQueue(T c);
 
 	/// <summary>
 	/// Des the queue.
 	/// </summary>
 	/// <param name="num">The .</param>
 	/// <returns></returns>
-	bool deQueue(card& c);
+	bool deQueue(T& c);
 
 	/// <summary>
 	/// Gets the front.
 	/// </summary>
 	/// <returns></returns>
-	Node* getFront()const;
+	Node<T>* getFront()const;
 
 	/// <summary>
 	/// Gets the back.
 	/// </summary>
 	/// <returns></returns>
-	Node* getBack()const;
+	Node<T>* getBack()const;
 
 	/// <summary>
 	/// Peeks the specified .
 	/// </summary>
 	/// <param name="">The .</param>
 	/// <returns>num</returns>
-	bool peek(card& c)const;//save next element to a int
+	bool peek(T& c)const;//save next element to a int
 
 	/// <summary>
 	/// Determines whether this instance is empty.
@@ -99,53 +100,55 @@ public:
 	//::Queue& operator=(Queue* queue);
 
 private:
-	Node* back;//pointer to rear of list
-	Node* front;;//pointer to start of list
+	Node<T>* back;//pointer to rear of list
+	Node<T>* front;;//pointer to start of list
 	int qty;//variable to hold number of elements
 	int max;//max size of queue
 };
 
 #endif
 
-
-inline Queue::Queue()
+template<class T>
+inline Queue<T>::Queue()
 {
 	back = NULL;
 	front = NULL;
 	qty = 0;
 	max = 20;
 }
-
-inline Queue::Queue(int maxSize)
+template<class T>
+inline Queue<T>::Queue(int maxSize)
 {
 	back = NULL;
 	front = NULL;
 	qty = 0;
 	max = maxSize;
 }
-
-inline Queue::~Queue()
+template<class T>
+inline Queue<T>::~Queue()
 {
 	makeEmpty();
 }
 
-inline bool Queue::enQueue(card c)
+template<class T>
+inline bool Queue<T>::enQueue(T c)
 {
-	Node* temp;
+	Node<T>* temp;
 	if (isFull())
 	{
 		return false;
 	}
-	temp = new Node;
-	temp->c_.face = c.face;
-	temp->c_.suit = c.face;
+	temp = new Node<T>;
+	temp->c_ = c;
+	//temp->c_.face = c.face;
+	//temp->c_.suit = c.face;
 	temp->next = NULL;
 
 	if (back == NULL) {
 		back = temp;
 		back->next = NULL;
-		back->c_.face = c.face;
-		back->c_.suit = c.suit;
+		//back->c_.face = c.face;
+		//back->c_.suit = c.suit;
 		front = back;
 		qty++;
 		return true;
@@ -158,10 +161,10 @@ inline bool Queue::enQueue(card c)
 	}
 
 }
-
-inline bool Queue::deQueue(card& c)
+template<class T>
+inline bool Queue<T>::deQueue(T& c)
 {
-	Node* temp;
+	Node<T>* temp;
 	if (back == front)
 	{
 		back = front = NULL;
@@ -171,8 +174,8 @@ inline bool Queue::deQueue(card& c)
 	else
 	{
 		temp = front;
-		c.face = temp->c_.face;
-		c.suit = temp->c_.suit;
+		//c.face = temp->c_.face;
+		//c.suit = temp->c_.suit;
 		front = front->next;
 		delete temp;
 		qty--;
@@ -181,18 +184,18 @@ inline bool Queue::deQueue(card& c)
 
 }
 
-
-inline Node* Queue::getFront()const
+template<class T>
+inline Node<T>* Queue<T>::getFront()const
 {
 	return this->front;
 }
-
-inline Node* Queue::getBack() const
+template<class T>
+inline Node<T>* Queue<T>::getBack() const
 {
 	return this->back;
 }
-
-inline bool Queue::peek(card& c)const
+template<class T>
+inline bool Queue<T>::peek(T& c)const
 {
 	if (isEmpty())
 	{
@@ -209,7 +212,8 @@ inline bool Queue::peek(card& c)const
 
 }
 
-inline bool Queue::isEmpty()const
+template<class T>
+inline bool Queue<T>::isEmpty()const
 {
 
 	if (qty==0)
@@ -219,8 +223,8 @@ inline bool Queue::isEmpty()const
 	return false;
 
 }
-
-inline bool Queue::isFull()const
+template<class T>
+inline bool Queue<T>::isFull()const
 {
 
 	if (qty >= max)
@@ -230,10 +234,10 @@ inline bool Queue::isFull()const
 	return false;
 
 }
-
-inline bool Queue::makeEmpty()
+template<class T>
+inline bool Queue<T>::makeEmpty()
 {
-	Node* temp;
+	Node<T>* temp;
 	if (isEmpty())
 	{
 		std::cout << " Queue is empty" << std::endl;
@@ -248,20 +252,20 @@ inline bool Queue::makeEmpty()
 	back = NULL;
 	return true;
 }
-
-inline int Queue::getQty()
+template<class T>
+inline int Queue<T>::getQty()
 {
 	return qty;
 }
-
-inline void Queue::displayQueue()const
+template<class T>
+inline void Queue<T>::displayQueue()const
 {
-	Node* temp;
+	Node<T>* temp;
 
 		temp = front;
 		while (temp != NULL)
 		{
-			std::cout <<temp->c_.face << temp->c_.suit;
+			std::cout << temp->c_;
 			temp = temp->next;
 		}
 		std::cout << std::endl;
