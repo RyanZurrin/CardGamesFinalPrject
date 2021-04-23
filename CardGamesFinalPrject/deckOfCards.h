@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
-
+#include <stdlib.h>
+#include <time.h>
 struct card
 {
 	char suit;
@@ -27,14 +28,14 @@ class deckOfCards
 //////////////////////////////////////////////////////////////////////////////
 /////////// deckOfCards Member Function Declarations  ////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-deckOfCards::deckOfCards(int decks)
+inline deckOfCards::deckOfCards(int decks)
 {
 	topCard = NULL;
 	numOfDecks = (decks < 1 ? 1 : decks);
 	loadDeck();
 }
 //////////////////////////////////////////////////////////////////////////////
-std::string deckOfCards::takeCard()
+inline std::string deckOfCards::takeCard()
 {
 	std::string str="  ";
 	card *temp;
@@ -53,14 +54,14 @@ std::string deckOfCards::takeCard()
 	return str;
 }
 //////////////////////////////////////////////////////////////////////////////
-void deckOfCards::displayDeck()
+inline void deckOfCards::displayDeck()
 {
 	for(card *scan=topCard; scan != NULL; scan = scan->next)
 		std::cout << scan->face <<  scan->suit << "  ";
 	std::cout << std::endl << std::endl;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool deckOfCards::shuffleDeck()
+inline bool deckOfCards::shuffleDeck()
 {
 	//this part collects all the cards and reshuffles them after play has started
 	deleteDeck();
@@ -72,7 +73,7 @@ bool deckOfCards::shuffleDeck()
 	int cardToFind;
 
 	card *scan;
-	card *back;
+	card *back        = NULL;
 	card *tempTopCard = NULL;
 
 	for(int times = rand() % 10 + 1; times > 0 ; times--)
@@ -104,7 +105,7 @@ bool deckOfCards::shuffleDeck()
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////////
-void deckOfCards::loadDeck()
+inline void deckOfCards::loadDeck()
 {
 	int s; // 003, 004, 005 & 006 ascii values for the suit
 	int c;
@@ -137,7 +138,7 @@ void deckOfCards::loadDeck()
 			}
 }
 //////////////////////////////////////////////////////////////////////////////
-void deckOfCards::deleteDeck()
+inline void deckOfCards::deleteDeck()
 {
 	for(card *temp; topCard != NULL; )
 	{
@@ -148,7 +149,7 @@ void deckOfCards::deleteDeck()
 	}
 }
 //////////////////////////////////////////////////////////////////////////////
-deckOfCards::~deckOfCards()
+inline deckOfCards::~deckOfCards()
 {
 	deleteDeck();
 }
