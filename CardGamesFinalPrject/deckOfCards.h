@@ -3,6 +3,7 @@
 #include <string>
 #include <stdlib.h>
 #include <time.h>
+
 struct card
 {
 	char suit;
@@ -140,6 +141,7 @@ inline void deckOfCards::loadDeck()
 //////////////////////////////////////////////////////////////////////////////
 inline void deckOfCards::deleteDeck()
 {
+
 	for(card *temp; topCard != NULL; )
 	{
 		temp = topCard;
