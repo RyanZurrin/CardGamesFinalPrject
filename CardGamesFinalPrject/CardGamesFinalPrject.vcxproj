@@ -141,11 +141,12 @@
   <ItemGroup>
     <ClInclude Include="Crazy8.h" />
     <ClInclude Include="deckOfCards.h" />
+    <ClInclude Include="queue.h" />
     <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CardGames.cpp" />
-    <ClCompile Include="gameOfWar.h" />
+    <ClCompile Include="War.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
