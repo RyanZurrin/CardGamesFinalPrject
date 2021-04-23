@@ -2,8 +2,9 @@
 typedef deckOfCards doc;
 
 
-int main()
-{
+using namespace std;
+
+int main(){
 	doc test;
 	test.displayDeck();
 	test.shuffleDeck();
