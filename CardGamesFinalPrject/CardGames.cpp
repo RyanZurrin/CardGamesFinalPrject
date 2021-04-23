@@ -17,10 +17,10 @@ int main(){
 		CrazyEight c8(playerCount);
 
 	} else	if (game == 2){
-		//add your game
+		//Josh's game
 	}
 	else if (game == 3){
-		//add your game
+		//Ryan's game
 	}
 
 
