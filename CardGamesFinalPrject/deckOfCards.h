@@ -85,7 +85,6 @@ inline void deckOfCards::displayDeck()
 		std::cout << scan->face <<  scan->suit << "  ";
 	std::cout << std::endl << std::endl;
 }
-
 //////////////////////////////////////////////////////////////////////////////
 inline bool deckOfCards::shuffleDeck()
 {
