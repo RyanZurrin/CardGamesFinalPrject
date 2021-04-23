@@ -5,10 +5,13 @@
 #include <iomanip>
 #include <iostream>
 #include "deckOfCards.h"
-struct Node
+
+
+
+struct cardStruct
 {
 	card c_;
-	Node* next;
+	cardStruct* next;
 };
 
 class Queue
@@ -49,13 +52,13 @@ public:
 	/// Gets the front.
 	/// </summary>
 	/// <returns></returns>
-	Node* getFront()const;
+	cardStruct* getFront()const;
 
 	/// <summary>
 	/// Gets the back.
 	/// </summary>
 	/// <returns></returns>
-	Node* getBack()const;
+	cardStruct* getBack()const;
 
 	/// <summary>
 	/// Peeks the specified .
@@ -99,8 +102,8 @@ public:
 	//::Queue& operator=(Queue* queue);
 
 private:
-	Node* back;//pointer to rear of list
-	Node* front;;//pointer to start of list
+	cardStruct* back;//pointer to rear of list
+	cardStruct* front;;//pointer to start of list
 	int qty;//variable to hold number of elements
 	int max;//max size of queue
 };
@@ -131,12 +134,12 @@ inline Queue::~Queue()
 
 inline bool Queue::enQueue(card c)
 {
-	Node* temp;
+	cardStruct* temp;
 	if (isFull())
 	{
 		return false;
 	}
-	temp = new Node;
+	temp = new cardStruct;
 	temp->c_.face = c.face;
 	temp->c_.suit = c.face;
 	temp->next = NULL;
@@ -161,7 +164,7 @@ inline bool Queue::enQueue(card c)
 
 inline bool Queue::deQueue(card& c)
 {
-	Node* temp;
+	cardStruct* temp;
 	if (back == front)
 	{
 		back = front = NULL;
@@ -171,6 +174,7 @@ inline bool Queue::deQueue(card& c)
 	else
 	{
 		temp = front;
+		
 		c.face = temp->c_.face;
 		c.suit = temp->c_.suit;
 		front = front->next;
@@ -182,12 +186,12 @@ inline bool Queue::deQueue(card& c)
 }
 
 
-inline Node* Queue::getFront()const
+inline cardStruct* Queue::getFront()const
 {
 	return this->front;
 }
 
-inline Node* Queue::getBack() const
+inline cardStruct* Queue::getBack() const
 {
 	return this->back;
 }
@@ -233,7 +237,7 @@ inline bool Queue::isFull()const
 
 inline bool Queue::makeEmpty()
 {
-	Node* temp;
+	cardStruct* temp;
 	if (isEmpty())
 	{
 		std::cout << " Queue is empty" << std::endl;
@@ -256,7 +260,7 @@ inline int Queue::getQty()
 
 inline void Queue::displayQueue()const
 {
-	Node* temp;
+	cardStruct* temp;
 
 		temp = front;
 		while (temp != NULL)

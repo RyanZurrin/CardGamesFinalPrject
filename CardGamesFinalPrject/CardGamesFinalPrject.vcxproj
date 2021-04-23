@@ -139,11 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="card.h" />
     <ClInclude Include="Crazy8.h" />
     <ClInclude Include="deckOfCards.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="queue.h" />
-    <ClInclude Include="player.h" />
+    <ClInclude Include="CardList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CardGames.cpp" />
