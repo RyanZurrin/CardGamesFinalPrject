@@ -21,12 +21,15 @@
     <ClInclude Include="Crazy8.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CardGames.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameOfWar.h">
+    <ClCompile Include="War.h">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
