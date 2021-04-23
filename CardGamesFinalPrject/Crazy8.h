@@ -1,18 +1,44 @@
 #pragma once
 #include "cards.h"
 
+class Player{
+public:
+	Player();
 
-class CrazyEight: private deckOfCards{
+	~Player();
+
+private:
+	int handSize;
+	card* hand;
+
+
+};
+
+Player::Player(){
+}
+
+Player::~Player(){
+}
+
+
+
+class CrazyEight{
 public:
 	CrazyEight(int numPlayers);
 	~CrazyEight();
 
 private:
 	deckOfCards *deck;
+	int numplayers;
+	void play();
 
-
+	void dealCards();
 
 };
+
+
+
+}
 
 CrazyEight::CrazyEight(int numPlayers){
 	
