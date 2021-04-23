@@ -1,5 +1,4 @@
 #include "Crazy8.h"
-#include "gameOfWar.h"
 #include <iostream>
 using namespace std;
 
