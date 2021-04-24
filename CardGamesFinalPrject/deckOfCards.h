@@ -28,8 +28,8 @@ class deckOfCards
 	public:
 		deckOfCards(int = 0);
 		~deckOfCards();
-		//string takeCard(); // changing this so i can return a card not just a string
-		card takeCard();
+		std::string takeCard(); // changing this so i can return a card not just a string
+		card pickCard();
 		bool shuffleDeck();
 		void displayDeck();//function only used for testing purposes
 	private:
@@ -46,7 +46,7 @@ inline deckOfCards::deckOfCards(int decks)
 	loadDeck();
 }
 //////////////////////////////////////////////////////////////////////////////
-//inline std::string deckOfCards::takeCard()
+inline std::string deckOfCards::takeCard()
 {
 	std::string str="  ";
 	card *temp;
@@ -57,6 +57,18 @@ inline deckOfCards::deckOfCards(int decks)
 	str[0] = topCard->face;
 	str[1] = topCard->suit;
 	str[2] = '\n';
+
+	temp = topCard;
+	topCard = topCard->next;
+	delete temp;
+
+	return str;
+}
+
+inline card deckOfCards::pickCard(){
+	std::string str = "  ";
+	card* temp;
+	card rC;
 
 	temp = topCard;
 	topCard = topCard->next;
