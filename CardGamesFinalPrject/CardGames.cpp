@@ -1,5 +1,4 @@
 #include "Crazy8.h"
-
 #include <iostream>
 
 
@@ -16,6 +15,7 @@ int main(){
 		//cout << "players?" << endl;
 		//cin >> playerCount;
 		CrazyEight c8(playerCount);
+
 	} else	if (game == 2){
 		//Josh's game
 	}

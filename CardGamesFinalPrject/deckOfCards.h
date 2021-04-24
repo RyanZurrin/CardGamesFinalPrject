@@ -72,10 +72,9 @@ inline card deckOfCards::pickCard(){
 
 	temp = topCard;
 	topCard = topCard->next;
-	rC = *temp;
 	delete temp;
 
-	return 	rC;
+	return str;
 }
 
 //////////////////////////////////////////////////////////////////////////////
