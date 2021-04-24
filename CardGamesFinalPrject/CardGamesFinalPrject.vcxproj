@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="card.h" />
+    <ClInclude Include="cardNode.h" />
     <ClInclude Include="Crazy8.h" />
     <ClInclude Include="deckOfCards.h" />
     <ClInclude Include="player.h" />

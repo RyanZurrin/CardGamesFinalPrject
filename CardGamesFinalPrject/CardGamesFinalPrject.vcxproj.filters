@@ -30,7 +30,7 @@
     <ClInclude Include="CardList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="card.h">
+    <ClInclude Include="cardNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

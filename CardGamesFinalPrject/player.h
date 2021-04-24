@@ -21,8 +21,8 @@ public:
 	void createPlayer(int handSize, int max, bool hidden = false);
 	~Player();
 
-	bool addCard(card card);
-	bool removeCard(card card);
+	bool addCard(cardNode card);
+	bool removeCard(cardNode card);
 	void showAllCards();
 
 	int getHandSize();
@@ -50,7 +50,7 @@ int Player::getHandSize(){
 	return handSize;
 }
 
-bool Player::addCard(card card){
+bool Player::addCard(cardNode card){
 	if (cardCount < maxCards){
 		return hand.addItem(card);
 
@@ -61,7 +61,7 @@ bool Player::addCard(card card){
 
 
 //not tested yet just guessing
-bool Player::removeCard(card card){
+bool Player::removeCard(cardNode card){
 
 	bool found = false;
 

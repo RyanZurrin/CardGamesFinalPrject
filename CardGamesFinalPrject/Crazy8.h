@@ -1,5 +1,5 @@
 /***********************************************************
-*Player.h
+*Crazy8.h
 *By: Julian Stanton
 *
 *
@@ -26,7 +26,9 @@ private:
 	Player *players;
 	void dealCards();
 	Player discardPile;
-	bool validMove(card a, card b);
+	cardNode drawCard();
+	bool validMove(cardNode a, cardNode b);
+	void drawScreen();
 
 };
 
@@ -41,7 +43,7 @@ void CrazyEight::play(){
 	int playerIn;
 	int curPlayersTurn =0;
 
-	discardPile.addCard(deck->takeCard());
+	discardPile.addCard(drawCard());
 
 	while (!endOfGame){
 		cout << "Player " << curPlayersTurn << "'s turn. What would you like to do?" << endl;
@@ -54,7 +56,6 @@ void CrazyEight::play(){
 		discardPile.showFirstCard();
 		cout << endl;
 
-
 		cin >> playerIn;
 
 		if (playerIn ==0 )	{
@@ -66,16 +67,33 @@ void CrazyEight::play(){
 
 }
 
-bool CrazyEight::validMove(card a, card b){
+cardNode CrazyEight::drawCard(){
+	cardNode temp;
+
+	string str = deck->takeCard();
+	temp.face = str[0];
+	temp.suit = str[1];
+	return temp;
+}
+
+bool CrazyEight::validMove(cardNode a, cardNode b){
+
+
+	return false;
+}
+
+void CrazyEight::drawScreen(){
+
 
 }
 
-
 void CrazyEight::dealCards(){
 	cout << "Dealing Cards" << endl;
+	cardNode temp;
 	for (int p = 0; p < numPlayers; p++)		{
 		for (int i = 0; i < players[p].getHandSize(); i++){
-			players[p].addCard(deck->takeCard());
+			
+			players[p].addCard(drawCard());
 		}
 
 	}
@@ -115,8 +133,6 @@ CrazyEight::CrazyEight(int numPlayers){
 	discardPile.createPlayer(handSize, 52 * numDecks, true);
 
 	play();
-
-
 }
 
 CrazyEight::~CrazyEight(){

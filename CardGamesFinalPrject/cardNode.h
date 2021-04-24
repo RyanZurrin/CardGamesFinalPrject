@@ -1,12 +1,12 @@
 #pragma once
 
-struct card{
+struct cardNode{
 	char suit;
 	char face;
-	card* next;
+	cardNode* next;
 
 	//overide just checks suit and face, not address
-	bool operator==(card a){
+	bool operator==(cardNode a){
 		if (a.suit == suit && a.face == face)
 			return true;
 		else

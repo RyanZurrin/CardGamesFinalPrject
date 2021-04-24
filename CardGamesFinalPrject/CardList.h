@@ -12,7 +12,7 @@
 #define CARD_LIST_H
 
 
-#include "card.h"
+#include "cardNode.h"
 #include <iostream>
 using namespace std;
 
@@ -20,15 +20,15 @@ using namespace std;
 class CardList {
 
 private:
-	card* head;
+	cardNode* head;
 	int quanity;
 	int max;
 
 
 public:
 	CardList();
-	bool addItem(card c);
-	bool removeItem(card c);
+	bool addItem(cardNode c);
+	bool removeItem(cardNode c);
 	bool isEmpty();
 	bool clearList();
 	
@@ -50,14 +50,14 @@ CardList::CardList(){
 	quanity = 0;
 }
 
-bool CardList::addItem(card c){
+bool CardList::addItem(cardNode c){
 
 	if (isFull()){
 		return false;
 	}
 
-	card* newNode;
-	newNode = new card;
+	cardNode* newNode;
+	newNode = new cardNode;
 	newNode->face = c.face;
 	newNode->suit = c.suit;
 	newNode->next = head;
@@ -68,9 +68,9 @@ bool CardList::addItem(card c){
 
 }
 
-bool CardList::removeItem(card c){
-	card* cur;
-	card* prev = NULL;
+bool CardList::removeItem(cardNode c){
+	cardNode* cur;
+	cardNode* prev = NULL;
 
 	if (isEmpty()){
 		return true;
@@ -121,7 +121,7 @@ bool CardList::isEmpty(){
 bool CardList::clearList(){
 
 
-	card* temp;
+	cardNode* temp;
 	while (head){
 
 		temp = head;
@@ -148,7 +148,7 @@ int CardList::getQuantity(){
 
 void CardList::displayAll(){
 
-	card* cur;
+	cardNode* cur;
 
 	for (cur = head; cur != NULL; cur = cur->next)
 		cout << cur->face << cur->suit << endl;
