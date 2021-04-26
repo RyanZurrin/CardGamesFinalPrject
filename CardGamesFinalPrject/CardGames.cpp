@@ -1,4 +1,12 @@
 
+/***********************************************************
+*CardGameProject.cpp
+*By: Julian Stanton, Ryan Zurrin, and Josh Jarvis
+*
+*
+*Program Description:
+*	A driver program to play card games
+*************************************************************/
 
 #include "Crazy8.h"
 #include "War.h"
@@ -9,6 +17,7 @@ int main(){
 
 	bool playing = true;
 	bool displayMenu = true;
+	bool goodPick;
 	int game = 0;
 	int playerCount = 2;
 	int gameType = 1;
@@ -34,17 +43,36 @@ int main(){
 			if (game == 1)
 			{
 				//Julian's Game Crazy Eights
-				std::cout << "Crazy Eights selected?" << std::endl;
-				//std::cin >> playerCount;
-				//CrazyEight c8(playerCount);
+				std::cout << "Crazy Eights selected" << std::endl;
+				do
+				{
+					goodPick = true;
+					std::cout << "Select how many players will be playing\n>>";
+					std::cin >> playerCount;
+					if (playerCount >= 1 && playerCount <= 8)
+					{
+						CrazyEight c8(playerCount);
+					}
+					else
+					{
+						goodPick = false;
+						std::cout << "Invalid Player selection, enter a value"
+								  << " between 1 and 8\n" << std::endl;
+						std::cin.clear();
+						std::cin.ignore(100, '\n');
+					}
+				}while (!goodPick);
+
+
 			}
 			else if (game == 2)
 			{
-				//Josh's Game
+				//Josh's Game of Black Jack
 				std::cout << "Black Jack Selected" << std::endl;
 			}
 			else if (game == 3)
 			{
+				//Ryan's game of War
 				War newWar;
 				newWar.warMenu();
 			}
