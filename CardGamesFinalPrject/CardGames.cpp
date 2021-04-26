@@ -1,3 +1,5 @@
+
+
 #include "Crazy8.h"
 #include "War.h"
 #include <iostream>
@@ -14,18 +16,20 @@ int main(){
 	{
 		if (displayMenu)
 		{
-			std::cout << "\n/=================================\\"<< std::endl;
-			std::cout << "||      Pick a Game to Play      ||" << std::endl;
-			std::cout << "|| ----------------------------- ||" << std::endl;
-			std::cout << "|| 1.)  Crazy Eights             ||" << std::endl;
-			std::cout << "|| 2.)  Black Jack               ||" << std::endl;
-			std::cout << "|| 3.)  War                      ||" << std::endl;
-			std::cout << "|| 4.)  Exit Program             ||" << std::endl;
-			std::cout << "\\=================================/" << std::endl;
+			char h = 006;
+			std::cout << "\n+-------------------------------+"<< std::endl;
+			std::cout << "|      pick a Game to play      |" << std::endl;
+			std::cout << "|                     _______   |" << std::endl;
+			std::cout << "|  1.)  Crazy Eights |       |  |" << std::endl;
+			std::cout << "|  2.)  Black Jack   | A     |  |" << std::endl;
+			std::cout << "|  3.)  War          |   "<<h<<"   |  |" << std::endl;
+			std::cout << "|  4.)  Random Game  |     A |  |" << std::endl;
+			std::cout << "|  5.)  Exit Program |_______|  |" << std::endl;
+			std::cout << "+-------------------------------+" << std::endl;
 		}
 		std::cout << "Pick a game to play\n>>";
 		std::cin >> game;
-		if (game >= 1 && game <= 4)
+		if (game >= 1 && game <= 5)
 		{
 			if (game == 1)
 			{
@@ -41,12 +45,16 @@ int main(){
 			}
 			else if (game == 3)
 			{
-				War newWar(1);
+				War newWar;
 				newWar.warMenu();
+			}
+			else if (game == 4)
+			{
+				//Game Randomizer
 			}
 			else
 			{
-				std::cout << "Exiting game now. Thank you Good bye!";
+				std::cout << "Exiting game now. Thank you Good bye!\n";
 				playing = false;
 			}
 		}
