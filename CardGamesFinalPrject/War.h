@@ -14,8 +14,14 @@
 #include <iostream>
 #include <string>
 typedef deckOfCards doc;
+typedef unsigned long long int ulli;
 
-const bool TOP = false;
+/// <summary>
+/// The sim speed adjusts how fast the simulation plays, the lower the value
+/// the faster the speed of simulation the higher the slower.
+/// inputs from 0 to 18446744073709551615
+/// </summary>
+const ulli SIM_SPEED = 50000000;
 
 class War:
 	protected deckOfCards
@@ -44,7 +50,7 @@ private:
 	void flip2();
 	void flip0();
 	static int rank(char );
-	static void delayGame(int t = 1000000);
+	static void delayGame(ulli t = 550000000);
 	struct players
 	{
 		struct p1
@@ -232,7 +238,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			else
 			{
 				std::cout << "\ncomputer player won that round\n";
-				delayGame();
+				delayGame(SIM_SPEED);
 				while (!_p_.p2_.discard2->isEmpty()||!_p_.p1_.discard1->isEmpty())
 				{
 					_p_.p1_.discard1->pop(wonCard);
@@ -277,7 +283,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			else
 			{
 				std::cout << "\ncomputer player two won that round\n";
-				delayGame();
+				delayGame(SIM_SPEED);
 				while (!_p_.p2_.discard2->isEmpty()||!_p_.p1_.discard1->isEmpty())
 				{
 					_p_.p2_.discard2->pop(wonCard);
@@ -312,7 +318,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			else
 			{
 				std::cout << "computer one and computer player two tied that round\n";
-				delayGame();
+				delayGame(SIM_SPEED*SIM_SPEED);
 				_p_.p1_.playCard();
 				_p_.p2_.playCard();
 				recur++;
@@ -373,6 +379,7 @@ inline void War::flip1()
 		std::cout << "Invalid choice\n" << std::endl;
 		std::cin.clear();
 		std::cin.ignore(100, '\n');
+		delayGame();
 	}
 
 }//end method flip1
@@ -464,10 +471,25 @@ inline void War::flip0()
 
 inline bool War::checkForWinner()
 {
+	if (_p_.p1_.pile1->getQty() == 0&&_p_.p2_.pile2->getQty() == 0)
+	{
+		std::cout << "\nThis game was a draw, No one Won\n";
+	}
 	if (_p_.p1_.pile1->getQty() == 0)
 	{
-		std::cout << "\nPlayer 2 has won the game in "<< totalRounds
-				  << " rounds!!\n";
+		if (numPlayers == 2)
+		{
+			std::cout << "\nPlayer 2 has won the game in "<< totalRounds
+					  << " rounds!!\n";
+		}
+		else if (numPlayers == 1)
+		{
+			std::cout << "\nThe Computer opponent Won this game\n";
+		}
+		else
+		{
+			std::cout << "\nComputer SIM 2 has Won this match\n";
+		}
 		winner = true;
 		displayMenu = true;
 		return true;
@@ -549,7 +571,7 @@ inline War::~War()
 
 }//end War destructor
 
-inline void War::delayGame(int t)
+inline void War::delayGame(ulli t)
 {
 	for (int i = 0; i < t; i++)
 	{
