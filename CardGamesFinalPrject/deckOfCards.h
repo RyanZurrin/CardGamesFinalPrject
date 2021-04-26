@@ -4,19 +4,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 struct card
 {
 	char suit;
 	char face;
 	card * next;
-
-	//overide just checks suit and face, not address
-	bool operator==(card a){
-		if (a.suit == suit && a.face == face)
-			return true;
-		else
-			return false;
-	}
 
 };
 
@@ -28,8 +21,7 @@ class deckOfCards
 	public:
 		deckOfCards(int = 0);
 		~deckOfCards();
-		std::string takeCard(); // changing this so i can return a card not just a string
-		card pickCard();
+		std::string takeCard();
 		bool shuffleDeck();
 		void displayDeck();//function only used for testing purposes
 	private:
@@ -61,21 +53,9 @@ inline std::string deckOfCards::takeCard()
 	temp = topCard;
 	topCard = topCard->next;
 	delete temp;
-
 	return str;
 }
 
-inline card deckOfCards::pickCard(){
-	std::string str = "  ";
-	card* temp;
-	card rC;
-
-	temp = topCard;
-	topCard = topCard->next;
-	delete temp;
-
-	return str;
-}
 
 //////////////////////////////////////////////////////////////////////////////
 inline void deckOfCards::displayDeck()
@@ -125,7 +105,6 @@ inline bool deckOfCards::shuffleDeck()
 		}
 
 	topCard = tempTopCard;
-
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -169,7 +148,7 @@ inline void deckOfCards::deleteDeck()
 	{
 		temp = topCard;
 		topCard = topCard->next;
-		//cout << temp->suit;
+		//std::cout << temp->suit;
 		delete temp;
 	}
 }
