@@ -318,7 +318,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			else
 			{
 				std::cout << "computer one and computer player two tied that round\n";
-				delayGame(SIM_SPEED*SIM_SPEED);
+				delayGame(SIM_SPEED+SIM_SPEED);
 				_p_.p1_.playCard();
 				_p_.p2_.playCard();
 				recur++;
