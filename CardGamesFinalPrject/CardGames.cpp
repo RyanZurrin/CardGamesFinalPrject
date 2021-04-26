@@ -15,7 +15,7 @@ int main(){
 		if (displayMenu)
 		{
 			std::cout << "\n/=================================\\"<< std::endl;
-			std::cout << "||      pick a Game to play      ||" << std::endl;
+			std::cout << "||      Pick a Game to Play      ||" << std::endl;
 			std::cout << "|| ----------------------------- ||" << std::endl;
 			std::cout << "|| 1.)  Crazy Eights             ||" << std::endl;
 			std::cout << "|| 2.)  Black Jack               ||" << std::endl;
