@@ -14,16 +14,18 @@
 
 
 int main(){
-
+	srand(static_cast<unsigned>(time(0)));
 	bool playing = true;
 	bool displayMenu = true;
 	bool goodPick;
+	bool randPick = false;
 	int game = 0;
+	int randomPicked;
 	int playerCount = 2;
 	int gameType = 1;
 	do
 	{
-		if (displayMenu)
+		if (displayMenu && !randPick)
 		{
 			char h = 006;
 			std::cout << "\n+-------------------------------+"<< std::endl;
@@ -36,8 +38,11 @@ int main(){
 			std::cout << "|  5.)  Exit Program |_______|  |" << std::endl;
 			std::cout << "+-------------------------------+" << std::endl;
 		}
-		std::cout << "Pick a game to play\n>>";
-		std::cin >> game;
+		if (!randPick)
+		{
+			std::cout << "Pick a game to play\n>>";
+			std::cin >> game;
+		}
 		if (game >= 1 && game <= 5)
 		{
 			if (game == 1)
@@ -62,23 +67,27 @@ int main(){
 						std::cin.ignore(100, '\n');
 					}
 				}while (!goodPick);
-
+				randPick = false;
 
 			}
 			else if (game == 2)
 			{
 				//Josh's Game of Black Jack
 				std::cout << "Black Jack Selected" << std::endl;
+				randPick = false;
 			}
 			else if (game == 3)
 			{
 				//Ryan's game of War
 				War newWar;
 				newWar.warMenu();
+				randPick = false;
 			}
 			else if (game == 4)
 			{
 				//Game Randomizer
+				randPick = true;
+				game = rand() % 3 + 1;
 			}
 			else
 			{
