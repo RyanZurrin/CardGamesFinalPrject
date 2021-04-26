@@ -343,6 +343,8 @@ inline void War::flip1()
 	char flip_;
 	totalRounds++;
 	showAllCards();
+	std::string p1;
+	std::string p2;
 	std::cout << "\nPlayer 1 press [F/f] to flip a card or [Q/q] "
 			  << "to quit game\n>>";
 	std::cin >> flip_;
@@ -350,8 +352,6 @@ inline void War::flip1()
 	{
 		if (flip_ == 'f' || flip_ == 'F')
 		{
-			std::string p1;
-			std::string p2;
 			_p_.p1_.playCard();
 			_p_.p1_.discard1->peek(p1);
 			_p_.p1_.discard1->getTop()->faceUp = true;
@@ -360,9 +360,72 @@ inline void War::flip1()
 			_p_.p2_.discard2->peek(p2);
 			_p_.p2_.discard2->getTop()->faceUp = true;
 			std::cout << "the computer flipped a : " << p2 << std::endl;
-			//showAllCards();
 			playRound(p1, p2);
 
+		}
+		if (flip_ == 'q' || flip_ == 'Q')
+		{
+			winner = true;
+			displayMenu = true;
+		}
+	}
+	else {
+		std::cout << "Invalid choice\n" << std::endl;
+		std::cin.clear();
+		std::cin.ignore(100, '\n');
+	}
+
+}//end method flip1
+
+inline void War::flip2()
+{
+	system("CLS");
+	totalRounds++;
+	char flip_;
+	std::string p1;
+	std::string p2;
+	showAllCards();
+	std::cout << "\nPlayer 1 press [F/f] or [L/l] to flip a card or [Q/q] "
+			  << "to quit game\n>>";
+	std::cin >> flip_;
+	if (flip_ =='f' || flip_ == 'F' || flip_ == 'l' || flip_ == 'L' ||
+		flip_ == 'q' || flip_ == 'Q')
+	{
+		if (flip_ == 'f' || flip_ == 'F' || flip_ == 'l' || flip_ =='L')
+		{
+
+			_p_.p1_.playCard();
+			_p_.p1_.discard1->peek(p1);
+			_p_.p1_.discard1->getTop()->faceUp = true;
+			std::cout << "\nPlayer one flipped a   : " << p1 << std::endl;
+		}
+		if (flip_ == 'q' || flip_ == 'Q')
+		{
+			winner = true;
+			displayMenu = true;
+			return;
+		}
+
+	}
+	else {
+		std::cout << "Invalid choice\n" << std::endl;
+		std::cin.clear();
+		std::cin.ignore(100, '\n');
+	}
+	//////////////////////////////////////////////////////////////////////////
+	std::cout << "\nPlayer 2 press [F/f] or [L/l] to flip a card or [Q/q]"
+			  << "to quit game\n>>";
+	std::cin >> flip_;
+	if (flip_ =='f' || flip_ == 'F' || flip_ == 'l' || flip_ == 'L' ||
+		flip_ == 'q' || flip_ == 'Q')
+	{
+		if (flip_ == 'f' || flip_ == 'F' || flip_ == 'l' || flip_ =='L')
+		{
+			_p_.p2_.playCard();
+			_p_.p2_.discard2->peek(p2);
+			_p_.p2_.discard2->getTop()->faceUp = true;
+			std::cout << "\nPlayer two flipped a   : " << p2 << std::endl;
+			playRound(p1, p2);
 
 		}
 		if (flip_ == 'q' || flip_ == 'Q')
@@ -377,11 +440,7 @@ inline void War::flip1()
 		std::cin.clear();
 		std::cin.ignore(100, '\n');
 	}
-}//end method flip1
 
-inline void War::flip2()
-{
-	totalRounds++;
 
 }//end method flip2
 
