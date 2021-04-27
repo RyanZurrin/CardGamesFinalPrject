@@ -12,8 +12,12 @@
 #include "queue.h"
 #include "stack.h"
 #include <iostream>
-#include <string>
+
+// using a typedef to make the deckOfCards Class shorter to use in my class
 typedef deckOfCards doc;
+
+// using typedef to make the long long unsigned int shorter to use in the sim
+// speed variable
 typedef unsigned long long int ulli;
 
 /// <summary>
@@ -21,39 +25,116 @@ typedef unsigned long long int ulli;
 /// the faster the speed of simulation the higher the slower.
 /// inputs from 0 to 18446744073709551615
 /// </summary>
-const ulli SIM_SPEED = 1000000;
+const ulli SIM_SPEED = 100000000;
 
-class War:
+/// <summary>
+/// C++ class used to play the card game war. Along with three additional ADT's,
+/// one being a deck class provided by the instructor and the other two are a
+/// stack and queue which were built by me and then converted to template class
+/// implementation so that they could handle the strings being used in the the
+/// take card method provided my the deckOfCards class.
+/// </summary>
+/// <seealso cref="deckOfCards" />
+class War :
 	protected deckOfCards
 {
 public:
+	/// <summary>
+	/// Initializes a new instance of the <see cref="War"/> class.
+	/// </summary>
 	War();
-	War(int);
+	/// <summary>
+	/// Initializes a new instance of the <see cref="War"/> class.
+	/// </summary>
+	/// <param name="players">The number of players can be set from here
+	/// ifs should anyone ever build a implementation to go that route.</param>
+	War(int players);
+	/// <summary>
+	/// a public method to the main menu of the game which allows the user to
+	/// pick which way they would want to play. 1 player vs computer, player vs
+	/// player, or a full simulation which goes very fast if the speed is not
+	/// adjusted.
+	/// </summary>
 	void warMenu();
+	/// <summary>
+	/// Shows all cards.
+	/// </summary>
 	void showAllCards()const;
+	/// <summary>
+	/// Finalizes an instance of the <see cref="War"/> class.
+	/// </summary>
 	~War();
 private:
-	doc* _cards;
-	int numPlayers;
-	int totalRounds;
+	doc* _cards; // pointer to the deck of cards that is used to play
+	int numPlayers; // integer variable holding the amount of players {0,1,2}
+	int totalRounds; // variable keeping track of total rounds played
+	int totalWars;
 	bool endGame;
 	bool winner;
 	bool displayMenu;
+	bool atWar;
+	/// <summary>
+	/// Checks for winner.
+	/// </summary>
+	/// <returns></returns>
 	bool checkForWinner();
-	bool compWar;
+	/// <summary>
+	/// Runs the one player.
+	/// </summary>
 	void runOnePlayer();
+	/// <summary>
+	/// Runs the two player.
+	/// </summary>
 	void runTwoPlayer();
+	/// <summary>
+	/// Runs the sim.
+	/// </summary>
 	void runSim();
+	/// <summary>
+	/// Deals the cards.
+	/// </summary>
 	void dealCards()const;
+	/// <summary>
+	/// Plays the round.
+	/// </summary>
+	/// <param name="p1Card">The p1 card.</param>
+	/// <param name="p2Card">The p2 card.</param>
 	void playRound(std::string&, std::string&);
+	/// <summary>
+	/// Discards the current cards.
+	/// </summary>
 	void discardCurrentCards()const;
+	/// <summary>
+	/// Flip1s this instance.
+	/// </summary>
 	void flip1();
+	/// <summary>
+	/// Flip2s this instance.
+	/// </summary>
 	void flip2();
+	/// <summary>
+	/// Flip0s this instance.
+	/// </summary>
 	void flip0();
-	static int rank(char );
-	static void delayGame(ulli t = 550000000);
+	/// <summary>
+	/// Ranks the specified p1.
+	/// </summary>
+	/// <param name="p1">The p1.</param>
+	/// <returns></returns>
+	static int rank(char);
+	/// <summary>
+	/// Delays the game.
+	/// </summary>
+	/// <param name="t">The t.</param>
+	static void delayGame(ulli t = 100000000);
+	/// <summary>
+	///
+	/// </summary>
 	struct players
 	{
+		/// <summary>
+		///
+		/// </summary>
 		struct p1
 		{
 			Queue<std::string>* pile1;
@@ -75,6 +156,9 @@ private:
 				discard1->push(topCard);
 			}
 		}p1_;
+		/// <summary>
+		///
+		/// </summary>
 		struct p2
 		{
 			Queue<std::string>* pile2;
@@ -106,22 +190,24 @@ inline War::War()
 {
 	numPlayers = 0;
 	totalRounds = 0;
+	totalWars = 0;
 	_cards = new deckOfCards(1);
 	endGame = false;
 	displayMenu = true;
 	winner = false;
-	compWar = false;
+	atWar = false;
 }
 
 inline War::War(int players)
 {
 	numPlayers = players;
 	totalRounds = 0;
+	totalWars = 0;
 	_cards = new deckOfCards(1);
 	endGame = false;
 	displayMenu = true;
 	winner = false;
-	compWar = false;
+	atWar = false;
 
 }//end War overloaded constructor
 
@@ -227,7 +313,16 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			std::string wonCard;
 			if (numPlayers == 1 || numPlayers == 2)
 			{
-				std::cout << "\nplayer one won that round\n";
+				if (atWar)
+				{
+					std::cout << "\nPlayer one won the War!\n";
+					delayGame();
+					atWar = false;
+				}
+				else
+				{
+					std::cout << "\nPlayer one won that round\n";
+				}
 				while (!_p_.p2_.discard2->isEmpty()||!_p_.p1_.discard1->isEmpty())
 				{
 					_p_.p1_.discard1->pop(wonCard);
@@ -240,7 +335,16 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			}
 			else
 			{
-				std::cout << "\ncomputer player won that round\n";
+				if (atWar)
+				{
+					std::cout << "\nThe computer SIM 1 won that war!";
+					atWar = false;
+					delayGame(SIM_SPEED*2);
+				}
+				else
+				{
+					std::cout << "\nThe computer SIM 1 won that round\n";
+				}
 				delayGame(SIM_SPEED);
 				while (!_p_.p2_.discard2->isEmpty()||!_p_.p1_.discard1->isEmpty())
 				{
@@ -259,7 +363,16 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			std::string wonCard;
 			if (numPlayers == 1)
 			{
-				std::cout << "\nthe computer won that round\n";
+				if (atWar)
+				{
+					std::cout << "\nThe Computer won that war!\n";
+					delayGame();
+					atWar = false;
+				}
+				else
+				{
+					std::cout << "\nThe computer won that round\n";
+				}
 				while (!_p_.p2_.discard2->isEmpty()||!_p_.p1_.discard1->isEmpty())
 				{
 					_p_.p2_.discard2->pop(wonCard);
@@ -272,7 +385,16 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			}
 			else if (numPlayers == 2)
 			{
-				std::cout << "\nplayer two won that round\n";
+				if (atWar)
+				{
+					std::cout << "\nPlayer two won that war!\n";
+					delayGame();
+					atWar = false;
+				}
+				else
+				{
+					std::cout << "\nplayer two won that round\n";
+				}
 				while (!_p_.p2_.discard2->isEmpty()||!_p_.p1_.discard1->isEmpty())
 				{
 					_p_.p2_.discard2->pop(wonCard);
@@ -285,7 +407,16 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			}
 			else
 			{
-				std::cout << "\ncomputer player two won that round\n";
+				if (atWar)
+				{
+					std::cout << "\nThe computer SIM 2 won that war!\n";
+					atWar = false;
+					delayGame(SIM_SPEED*2);
+				}
+				else
+				{
+					std::cout << "\nThe computer SIM 2 won that round\n";
+				}
 				delayGame(SIM_SPEED);
 				while (!_p_.p2_.discard2->isEmpty()||!_p_.p1_.discard1->isEmpty())
 				{
@@ -303,36 +434,38 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			if (numPlayers == 1)
 			{
 				std::cout << "\nPlayer one tied the computer player that round\n";
-				std::cout << "\nturning one card face down\n";
-				delayGame(SIM_SPEED*SIM_SPEED);
+				std::cout << "\nTurning one card face down\n";
+				delayGame();
+				atWar = true;
 				_p_.p1_.playCard();
 				_p_.p2_.playCard();
-				recur++;
+				recur++; totalWars++;
 				flip1();
 
 			}
 			else if (numPlayers == 2)
 			{
-				std::cout << "player one and player two tied that round\n";
-				delayGame(SIM_SPEED*SIM_SPEED);
+				std::cout << "\nPlayer one and Player two tied that round\n";
+				delayGame();
+				atWar = true;
 				_p_.p1_.playCard();
 				_p_.p2_.playCard();
-				recur++;
+				recur++; totalWars++;
 				flip2();
 			}
 			else
 			{
-				std::cout << "computer one and computer player two tied that round\n";
+				std::cout << "\nComputer SIM 1 and Computer SIM 2 tied that round\n";
 				delayGame(SIM_SPEED);
-				compWar = true;
+				atWar = true;
 				_p_.p1_.playCard();
 				_p_.p2_.playCard();
-				recur++;
+				recur++; totalWars++;
 				flip0();
 			}
 		}
 		else
-			std::cout << "something went wrong\n";
+			std::cout << "\n\nsomething went wrong\n";
 	}
 	if ((numPlayers == 1 || numPlayers == 2) && recur == 0 )
 	{
@@ -459,12 +592,13 @@ inline void War::flip2()
 
 inline void War::flip0()
 {
+	system("CLS");
 	totalRounds++;
 	showAllCards();
-	if (compWar)
+	if (atWar)
 	{
 		delayGame(SIM_SPEED);
-		compWar = false;
+		atWar = false;
 	}
 	std::string p1;
 	std::string p2;
@@ -483,25 +617,27 @@ inline void War::flip0()
 inline bool War::checkForWinner()
 {
 	if (_p_.p1_.pile1->getQty() == 0&&_p_.p2_.pile2->getQty() == 0)
-	{
+	{//both run out of cards and the game is a dray
 		std::cout << "\nThis game was a draw, No one Won\n";
 	}
 	if (_p_.p1_.pile1->getQty() == 0)
-	{
+	{//player one runs out of cards and player two is the winner
 		if (numPlayers == 2)
 		{
 			std::cout << "\nPlayer 2 has won the game in "<< totalRounds
-					  << " rounds!!\n";
+					  << " rounds having " << totalWars << " wars total!\n";
 		}
 		else if (numPlayers == 1)
 		{
 			std::cout << "\nThe Computer opponent won this game in "
-					  << totalRounds <<" rounds\n";
+					  << totalRounds <<" rounds having " << totalWars
+					  << " wars total!\n";
 		}
 		else
 		{
 			std::cout << "\nComputer SIM 2 has Won this game in "
-					  << totalRounds <<" rounds\n";
+					  << totalRounds <<" rounds having " << totalWars
+					  << " wars total!\n";
 		}
 		winner = true;
 		displayMenu = true;
@@ -512,12 +648,14 @@ inline bool War::checkForWinner()
 		if (numPlayers == 2 || numPlayers == 1)
 		{
 			std::cout << "\nPlayer 1 has won the game in "<< totalRounds
-					  << " rounds!!\n";
+					  << " rounds having " << totalWars
+					  << " wars total!\n";
 		}
 		else
 		{
 			std::cout << "\nComputer SIM 1 has Won this game in "
-					  << totalRounds <<" rounds\n";
+					  << totalRounds <<" rounds having " << totalWars
+					  << " wars total!\n";
 		}
 		winner = true;
 		displayMenu = true;
@@ -529,7 +667,6 @@ inline bool War::checkForWinner()
 
 inline void War::runOnePlayer()
 {
-
 	discardCurrentCards();
 	dealCards();
 	do
@@ -553,7 +690,6 @@ inline void War::runTwoPlayer()
 inline void War::runSim()
 {
 	discardCurrentCards();
-
 	dealCards();
 	do
 	{
