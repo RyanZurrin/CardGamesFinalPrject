@@ -463,7 +463,7 @@ inline void War::flip0()
 	showAllCards();
 	if (compWar)
 	{
-		delayGame(SIM_SPEED*SIM_SPEED);
+		delayGame(SIM_SPEED);
 		compWar = false;
 	}
 	std::string p1;
