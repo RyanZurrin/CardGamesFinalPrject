@@ -43,97 +43,147 @@ public:
 	/// Initializes a new instance of the <see cref="War"/> class.
 	/// </summary>
 	War();
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="War"/> class.
 	/// </summary>
 	/// <param name="players">The number of players can be set from here
 	/// ifs should anyone ever build a implementation to go that route.</param>
 	War(int players);
+
 	/// <summary>
 	/// a public method to the main menu of the game which allows the user to
 	/// pick which way they would want to play. 1 player vs computer, player vs
-	/// player, or a full simulation which goes very fast if the speed is not
-	/// adjusted.
+	/// player, or a full simulation.
 	/// </summary>
 	void warMenu();
-	/// <summary>
-	/// Shows all cards.
-	/// </summary>
-	void showAllCards()const;
+
 	/// <summary>
 	/// Finalizes an instance of the <see cref="War"/> class.
 	/// </summary>
 	~War();
+
 private:
-	doc* _cards; // pointer to the deck of cards that is used to play
-	int numPlayers; // integer variable holding the amount of players {0,1,2}
-	int totalRounds; // variable keeping track of total rounds played
+	/// <summary>
+	/// Pointer to the deck of cards that is used to play
+	/// </summary>
+	doc* _cards;
+
+	/// <summary>
+	/// The number players {0,1,2}
+	/// </summary>
+	int numPlayers;
+
+	/// <summary>
+	/// The total rounds played
+	/// </summary>
+	int totalRounds;
+
+	/// <summary>
+	/// The total wars had in a game
+	/// </summary>
 	int totalWars;
-	bool endGame;
+
+	/// <summary>
+	/// The end game keeps running the game if not true
+	/// </summary>
+	bool endGame; // boolean that
+
+	/// <summary>
+	/// when winner is found winner is set to true and this breaks the flip cycle
+	/// </summary>
 	bool winner;
-	bool displayMenu;
+
+	/// <summary>
+	/// At war is set to true during a war so the proper message can be displayed
+	/// at the end of the war.
+	/// </summary>
 	bool atWar;
+
+	/// <summary>
+	/// Method that is used to show all the card for both players piles.
+	/// </summary>
+	void showAllCards()const;
+
 	/// <summary>
 	/// Checks for winner.
 	/// </summary>
 	/// <returns></returns>
 	bool checkForWinner();
+
 	/// <summary>
-	/// Runs the one player.
+	/// Runs the one player game mode.
 	/// </summary>
 	void runOnePlayer();
+
 	/// <summary>
-	/// Runs the two player.
+	/// Runs the two player game mode.
 	/// </summary>
 	void runTwoPlayer();
+
 	/// <summary>
-	/// Runs the sim.
+	/// Runs the simulation game mode
 	/// </summary>
 	void runSim();
+
 	/// <summary>
 	/// Deals the cards.
 	/// </summary>
 	void dealCards()const;
+
 	/// <summary>
-	/// Plays the round.
+	/// Plays the round comparing the played card from each player
 	/// </summary>
-	/// <param name="p1Card">The p1 card.</param>
-	/// <param name="p2Card">The p2 card.</param>
-	void playRound(std::string&, std::string&);
+	/// <param name="p1Card">The card played by player one.</param>
+	/// <param name="p2Card">The card played by player two.</param>
+	void playRound(std::string& p1Card, std::string& p2Card);
+
 	/// <summary>
 	/// Discards the current cards.
 	/// </summary>
 	void discardCurrentCards()const;
+
 	/// <summary>
-	/// Flip1s this instance.
+	/// Flip method used in the one player game mode.
 	/// </summary>
 	void flip1();
+
 	/// <summary>
-	/// Flip2s this instance.
+	/// Flip method used in the two player game mode.
 	/// </summary>
 	void flip2();
+
 	/// <summary>
-	/// Flip0s this instance.
+	/// Flip method used in the simulation game mode.
 	/// </summary>
 	void flip0();
+
 	/// <summary>
-	/// Ranks the specified p1.
+	/// takes a char from the card and returns a integer value to represent its
+	/// rank in the game.
 	/// </summary>
-	/// <param name="p1">The p1.</param>
-	/// <returns></returns>
-	static int rank(char);
+	/// <param name="c">The char to rank.</param>
+	/// <returns>integer value from 2 to 14, ace being a 14</returns>
+	static int rank(char c);
+
 	/// <summary>
-	/// Delays the game.
+	/// Delays the game as needed and is used to control the simulation speed
+	/// as well.
 	/// </summary>
-	/// <param name="t">The t.</param>
+	/// <param name="t">The amount of times a loop will increment to slow
+	/// down the process.</param>
 	static void delayGame(ulli t = 100000000);
+
 	/// <summary>
-	///
+	/// nested structures to hold the players and their card piles and discard
+	/// piles, as well as a play a card method for each which allows them to take
+	/// a card from their pile and put it into discard face up, or down if is a
+	/// war situation.
 	/// </summary>
 	struct players
 	{
 		/// <summary>
-		///
+		///	structure for player 1
 		/// </summary>
 		struct p1
 		{
@@ -157,7 +207,7 @@ private:
 			}
 		}p1_;
 		/// <summary>
-		///
+		///	structure for player 2
 		/// </summary>
 		struct p2
 		{
@@ -193,7 +243,6 @@ inline War::War()
 	totalWars = 0;
 	_cards = new deckOfCards(1);
 	endGame = false;
-	displayMenu = true;
 	winner = false;
 	atWar = false;
 }
@@ -205,7 +254,6 @@ inline War::War(int players)
 	totalWars = 0;
 	_cards = new deckOfCards(1);
 	endGame = false;
-	displayMenu = true;
 	winner = false;
 	atWar = false;
 
@@ -217,7 +265,7 @@ inline void War::warMenu()
 
 	while (!endGame)
 	{
-		if (displayMenu)
+		if (true)
 		{
 			std::cout << "\n/================================\\"<< std::endl;
 			std::cout << "||         Game Of WAR          ||" << std::endl;
@@ -238,19 +286,16 @@ inline void War::warMenu()
 			{
 			case 1:
 				std::cout << "one player game selected\n";
-				displayMenu = false;
 				numPlayers = 1;
 				runOnePlayer();
 				break;
 			case 2:
 				std::cout << "two player game selected\n";
-				displayMenu = false;
 				numPlayers = 2;
 				runTwoPlayer();
 				break;
 			case 3:
 				std::cout << "simulation game selected\n";
-				displayMenu = false;
 				numPlayers = 0;
 				runSim();
 				break;
@@ -511,7 +556,6 @@ inline void War::flip1()
 		if (flip_ == 'q' || flip_ == 'Q')
 		{
 			winner = true;
-			displayMenu = true;
 		}
 	}
 	else {
@@ -548,7 +592,6 @@ inline void War::flip2()
 		if (flip_ == 'q' || flip_ == 'Q')
 		{
 			winner = true;
-			displayMenu = true;
 			return;
 		}
 
@@ -577,7 +620,6 @@ inline void War::flip2()
 		if (flip_ == 'q' || flip_ == 'Q')
 		{
 			winner = true;
-			displayMenu = true;
 		}
 
 	}
@@ -640,7 +682,6 @@ inline bool War::checkForWinner()
 					  << " wars total!\n";
 		}
 		winner = true;
-		displayMenu = true;
 		return true;
 	}
 	else if (_p_.p2_.pile2->getQty() == 0)
@@ -658,7 +699,6 @@ inline bool War::checkForWinner()
 					  << " wars total!\n";
 		}
 		winner = true;
-		displayMenu = true;
 		return true;
 	}
 	else
@@ -698,9 +738,9 @@ inline void War::runSim()
 	while (!winner);
 }//end method run threePlayer
 
-inline int War::rank(char p1)
+inline int War::rank(char c)
 {
-	switch (p1)
+	switch (c)
 	{
 		case '2':return 2;break;
 		case '3':return 3;break;
