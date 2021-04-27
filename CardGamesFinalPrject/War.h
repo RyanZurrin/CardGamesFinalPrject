@@ -21,7 +21,7 @@ typedef unsigned long long int ulli;
 /// the faster the speed of simulation the higher the slower.
 /// inputs from 0 to 18446744073709551615
 /// </summary>
-const ulli SIM_SPEED = 50000000;
+const ulli SIM_SPEED = 1000000;
 
 class War:
 	protected deckOfCards
@@ -40,6 +40,7 @@ private:
 	bool winner;
 	bool displayMenu;
 	bool checkForWinner();
+	bool compWar;
 	void runOnePlayer();
 	void runTwoPlayer();
 	void runSim();
@@ -109,6 +110,7 @@ inline War::War()
 	endGame = false;
 	displayMenu = true;
 	winner = false;
+	compWar = false;
 }
 
 inline War::War(int players)
@@ -119,6 +121,7 @@ inline War::War(int players)
 	endGame = false;
 	displayMenu = true;
 	winner = false;
+	compWar = false;
 
 }//end War overloaded constructor
 
@@ -318,7 +321,8 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			else
 			{
 				std::cout << "computer one and computer player two tied that round\n";
-				delayGame(SIM_SPEED+SIM_SPEED);
+				delayGame(SIM_SPEED);
+				compWar = true;
 				_p_.p1_.playCard();
 				_p_.p2_.playCard();
 				recur++;
@@ -455,6 +459,11 @@ inline void War::flip0()
 {
 	totalRounds++;
 	showAllCards();
+	if (compWar)
+	{
+		delayGame(SIM_SPEED*SIM_SPEED);
+		compWar = false;
+	}
 	std::string p1;
 	std::string p2;
 	_p_.p1_.playCard();
@@ -484,11 +493,13 @@ inline bool War::checkForWinner()
 		}
 		else if (numPlayers == 1)
 		{
-			std::cout << "\nThe Computer opponent Won this game\n";
+			std::cout << "\nThe Computer opponent won this game in "
+					  << totalRounds <<" rounds\n";
 		}
 		else
 		{
-			std::cout << "\nComputer SIM 2 has Won this match\n";
+			std::cout << "\nComputer SIM 2 has Won this game in "
+					  << totalRounds <<" rounds\n";
 		}
 		winner = true;
 		displayMenu = true;
@@ -496,8 +507,16 @@ inline bool War::checkForWinner()
 	}
 	else if (_p_.p2_.pile2->getQty() == 0)
 	{
-		std::cout << "\nPlayer 1 has won the game in " << totalRounds
-				  << " rounds!!\n";
+		if (numPlayers == 2 || numPlayers == 1)
+		{
+			std::cout << "\nPlayer 1 has won the game in "<< totalRounds
+					  << " rounds!!\n";
+		}
+		else
+		{
+			std::cout << "\nComputer SIM 1 has Won this game in "
+					  << totalRounds <<" rounds\n";
+		}
 		winner = true;
 		displayMenu = true;
 		return true;
