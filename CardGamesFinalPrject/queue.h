@@ -284,7 +284,7 @@ inline void Queue<T>::displayQueue()const
 				std::cout << temp->c_ << " ";
 			}
 			else
-				std::cout << " *";
+				std::cout << " * ";
 			temp = temp->next;
 		}
 		std::cout << std::endl;
