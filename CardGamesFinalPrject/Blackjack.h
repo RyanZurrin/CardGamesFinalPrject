@@ -69,13 +69,15 @@ Blackjack::Blackjack(int p)
 	}
 	dealerVal = 0;
 	dSoftAceCount = 0;
+	/*
 	if(numPlayers > p)
 	{
 		cout << "The maximum player count is 5" << endl;
 		numPlayers = 5;
 	}
 	else
-		numPlayers = p;
+	*/
+	numPlayers = p;
 
 	deck.shuffleDeck();
 	playGame();
@@ -85,7 +87,8 @@ void Blackjack::playGame()
 {
 	string input;
 	int pVal;
-	bool gameOver[numPlayers];
+	const int playerCount = numPlayers;
+	bool gameOver[playerCount];
 	do
 	{
 		clearHands();
