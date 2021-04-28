@@ -67,17 +67,16 @@ Blackjack::Blackjack(int p)
 		//isBlackjack[i] = false;
 
 	}
+	numPlayers = 1;// RZ Iadded this line to make the if statement work so I could run the game with a player selection from the driver
 	dealerVal = 0;
 	dSoftAceCount = 0;
-	/*
 	if(numPlayers > p)
 	{
 		cout << "The maximum player count is 5" << endl;
 		numPlayers = 5;
 	}
 	else
-	*/
-	numPlayers = p;
+		numPlayers = p;
 
 	deck.shuffleDeck();
 	playGame();
@@ -87,8 +86,7 @@ void Blackjack::playGame()
 {
 	string input;
 	int pVal;
-	const int playerCount = numPlayers;
-	bool gameOver[playerCount];
+	bool gameOver[numPlayers];
 	do
 	{
 		clearHands();
