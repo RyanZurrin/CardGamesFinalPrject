@@ -52,6 +52,7 @@ int main(){
 			gameSelect = getValidInput(1, 5);
 		}
 
+
 		switch (gameSelect){
 		case CRAZY_EIGHTS:
 			{
@@ -80,14 +81,14 @@ int main(){
 			{
 				cout << "Black Jack selected" << endl;
 				cout << "Select how many players will be playing?" << endl;
-				userIn = getValidInput(0, 5);
+				userIn = getValidInput(1, 5);
 				Blackjack newGame(userIn);
 				gameSelect = 0;
 			}
 			break;
 		case WAR:
 		{
-			cout << "Way selected" << endl;
+			cout << "War selected" << endl;
 			War newWar;
 			newWar.playWar();
 			gameSelect = 0;
@@ -101,6 +102,7 @@ int main(){
 			playing = false;
 			break;
 		}
+
 	} while (playing);
 	return 0;
 }
@@ -109,8 +111,10 @@ int main(){
 int getValidInput(int min, int max){
 	int input;
 	bool valid;
+
 	do{
 		cin >> input;
+
 		if (cin.fail() || input<min || input >max){
 			cout << "invalid entry! Try again" << endl;
 			cin.clear();
@@ -119,6 +123,9 @@ int getValidInput(int min, int max){
 		} else{
 			valid = true;
 		}
-	} while (!valid);	
+
+	} while (!valid);
+
+
 	return input;
 }
