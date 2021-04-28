@@ -10,6 +10,7 @@
 
 #include "Crazy8.h"
 #include "War.h"
+#include "Blackjack.h"
 #include <iostream>
 
 
@@ -56,6 +57,7 @@ int main(){
 					if (playerCount >= 1 && playerCount <= 8)
 					{
 						CrazyEight c8(playerCount);
+
 					}
 					else
 					{
@@ -72,13 +74,15 @@ int main(){
 			{
 				//Josh's Game of Black Jack
 				std::cout << "Black Jack Selected" << std::endl;
+				Blackjack newGame;
+				newGame.playGame();
 				randPick = false;
 			}
 			else if (game == 3)
 			{
 				//Ryan's game of War
 				War newWar;
-				newWar.warMenu();
+				newWar.playWar();
 				randPick = false;
 			}
 			else if (game == 4)
