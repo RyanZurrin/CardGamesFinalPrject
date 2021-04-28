@@ -773,8 +773,5 @@ inline War::~War()
 
 inline void War::delayGame(ulli t)
 {
-	for (int i = 0; i < t; i++)
-	{
-
-	}
+	for (int i = 0; i < t; i++){}
 }
