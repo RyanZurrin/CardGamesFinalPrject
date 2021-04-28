@@ -27,4 +27,13 @@ struct cardNode{
 			return false;
 	}
 
+	bool operator!=(cardNode a){
+		if (a.suit != suit || a.face != face)
+			return true;
+		else
+			return false;
+	}
+
+
+
 };
