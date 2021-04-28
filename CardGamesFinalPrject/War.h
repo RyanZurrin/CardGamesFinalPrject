@@ -26,7 +26,7 @@ typedef unsigned long long int ulli;
 /// the faster the speed of simulation the higher the slower.
 /// inputs from 0 to 18446744073709551615
 /// </summary>
-const ulli SIM_SPEED = 100000000;
+const ulli SIM_SPEED = 1000000;
 
 /// <summary>
 /// C++ class used to play the card game war. Along with three additional ADT's,
@@ -36,8 +36,7 @@ const ulli SIM_SPEED = 100000000;
 /// take card method provided my the deckOfCards class.
 /// </summary>
 /// <seealso cref="deckOfCards" />
-class War :
-	protected deckOfCards
+class War
 {
 public:
 	/// <summary>
