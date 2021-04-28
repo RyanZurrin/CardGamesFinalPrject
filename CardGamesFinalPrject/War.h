@@ -643,7 +643,7 @@ inline void War::flip0()
 	if (atWar)
 	{
 		delayGame(SIM_SPEED);
-		atWar = false;
+
 	}
 	std::string p1;
 	std::string p2;
