@@ -597,9 +597,15 @@ inline void War::flip2()
 		{
 			winner = true;
 			return;
-		}std::cout << "Invalid choice\n" << std::endl;
-		std::cin.clear();
-		std::cin.ignore(100, '\n');
+
+		}
+		else
+		{
+			std::cout << "Invalid choice\n" << std::endl;
+			std::cin.clear();
+			std::cin.ignore(100, '\n');
+		}
+
 	}
 	//////////////////////////////////////////////////////////////////////////
 	std::cout << "\nPlayer 2 press [F/f] or [L/l] to flip a card or [Q/q]"
