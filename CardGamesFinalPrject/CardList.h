@@ -16,8 +16,6 @@
 #include <iostream>
 using namespace std;
 
-
-
 class CardList {
 
 private:
@@ -34,32 +32,89 @@ public:
 	bool clearList();
 
 	bool isFull();
+
 	int getQuantity();
 
 	void displayAll();
 
-	void displayTop();
+	string displayTop();
 
 	bool getCards(cardNode cards[], int amount);
 
+	cardNode takeTop();
+
 	~CardList();
+
+
+	void shuffleCards();
 
 };
 
+void CardList::shuffleCards(){
+	cardNode* temp;
+	cardNode card;
+	CardList shuffledList;
+
+	int random;
+	int quant = this->getQuantity();
+	temp = new cardNode[quant];
+
+	this->getCards(temp, quant);
+
+	while (this->getQuantity()){
+		this->getCards(temp, quant);
+		random = rand() % this->getQuantity();
+		card = temp[random];
+		if (card.face != 'X'){
+			shuffledList.addItem(card);
+			this->removeItem(card);
+		}
+		temp[random].face = 'X';
+
+	}
+
+	while (shuffledList.getQuantity()){
+
+		this->addItem(shuffledList.takeTop());
+	}
+
+	delete[] temp;
+}
 
 bool CardList::getCards(cardNode cards[], int amount){
 
 	cardNode* curr = head;
 
-	if (curr==NULL)	{
+	if (curr == NULL){
 		return false;
 	}
 
-	for (int i = 0; i < amount; i++)		{
+	if (amount>quanity)	{
+		amount = quanity;
+	}
+
+	for (int i = 0; i < amount; i++){
 		cards[i] = *curr;
 		curr = curr->next;
 	}
+
 	return true;
+}
+
+cardNode CardList::takeTop(){
+
+	cardNode top;
+	top.face = 'X';
+	if (head==NULL)	{
+		return top;
+	}
+
+	top = *head;
+
+	delete head;
+	head = top.next;
+	quanity--;
+	return top;
 }
 
 CardList::CardList(){
@@ -96,10 +151,8 @@ bool CardList::removeItem(cardNode c){
 
 	for (cur = head; cur != NULL; cur = cur->next){
 
-
 		if (cur->face == c.face && cur->suit == c.suit){
 
-		//	cout << "Removing " << cur->face << cur->suit << endl;
 			if (prev == NULL){
 
 				head = cur->next;
@@ -138,7 +191,6 @@ bool CardList::isEmpty(){
 
 bool CardList::clearList(){
 
-
 	cardNode* temp;
 	while (head){
 
@@ -148,6 +200,8 @@ bool CardList::clearList(){
 		quanity--;
 
 	}
+
+	head = NULL;
 	return true;
 
 }
@@ -171,17 +225,15 @@ void CardList::displayAll(){
 	for (cur = head; cur != NULL; cur = cur->next){
 		cout << count++<<") "<<cur->face << cur->suit << endl;
 	}
-
-
-
-	cout << endl;
-
 }
 
-void CardList::displayTop(){
-
+string CardList::displayTop(){
+	string temp;
 	cout << head->face << head->suit;
 
+	temp = head->face;
+	temp+= head->suit;
+	return temp;
 }
 
 CardList::~CardList(){
