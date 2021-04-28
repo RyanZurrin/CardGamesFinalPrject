@@ -344,7 +344,6 @@ inline void War::dealCards()const
 		{
 			_p_.p2_.pile2->enQueue(_cards->takeCard());
 		}
-
 	}
 }//end method dealCards
 
@@ -404,7 +403,6 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 					_p_.p1_.pile1->getBack()->faceUp = false;
 				}
 			}
-
 		}
 		else if (p1Play < p2Play)
 		{
@@ -482,7 +480,8 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			if (numPlayers == 1)
 			{
 				std::cout << "\nPlayer one tied the computer player that round\n";
-				std::cout << "\nTurning one card face down\n";
+				std::cout << "\npress a key to turn cards face down\n";
+				system("pause");
 				delayGame();
 				atWar = true;
 				_p_.p1_.playCard();
@@ -494,6 +493,8 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 			else if (numPlayers == 2)
 			{
 				std::cout << "\nPlayer one and Player two tied that round\n";
+				std::cout << "\npress a key to turn cards face down\n";
+				system("pause");
 				delayGame();
 				atWar = true;
 				_p_.p1_.playCard();
@@ -596,11 +597,7 @@ inline void War::flip2()
 		{
 			winner = true;
 			return;
-		}
-
-	}
-	else {
-		std::cout << "Invalid choice\n" << std::endl;
+		}std::cout << "Invalid choice\n" << std::endl;
 		std::cin.clear();
 		std::cin.ignore(100, '\n');
 	}
@@ -624,15 +621,12 @@ inline void War::flip2()
 		{
 			winner = true;
 		}
-
 	}
 	else {
 		std::cout << "Invalid choice\n" << std::endl;
 		std::cin.clear();
 		std::cin.ignore(100, '\n');
 	}
-
-
 }//end method flip2
 
 inline void War::flip0()
@@ -760,15 +754,12 @@ inline int War::rank(char c)
 		case 'A':return 14;break;
 		default: return 0;
 	}
-
 }//end method rank
-
 
 inline War::~War()
 {
 	discardCurrentCards();
 	delete _cards;
-
 }//end War destructor
 
 inline void War::delayGame(ulli t)
