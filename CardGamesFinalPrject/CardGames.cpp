@@ -1,4 +1,3 @@
-
 /***********************************************************
 *CardGameProject.cpp
 *By: Julian Stanton, Ryan Zurrin, and Josh Jarvis
@@ -13,122 +12,113 @@
 #include "Blackjack.h"
 #include <iostream>
 
+int getValidInput(int min, int max);
+
+using namespace std;
+
+typedef enum GameNames{
+
+	CRAZY_EIGHTS = 1,
+	BLACK_JACK,
+	WAR,
+	RANDOM_GAME,
+	EXIT,
+};
 
 int main(){
 	srand(static_cast<unsigned>(time(0)));
 	bool playing = true;
-	bool displayMenu = true;
-	bool goodPick;
-	bool randPick = false;
-	int game = 0;
-	int playerCount = 2;
-	int gameType = 1;
-	do
-	{
-		if (displayMenu && !randPick)
-		{
-			char h = 006;
-			std::cout << "\n+-------------------------------+"<< std::endl;
-			std::cout << "|      pick a Game to play      |" << std::endl;
-			std::cout << "|                     _______   |" << std::endl;
-			std::cout << "|  1.)  Crazy Eights |       |  |" << std::endl;
-			std::cout << "|  2.)  Black Jack   | A     |  |" << std::endl;
-			std::cout << "|  3.)  War          |   "<<h<<"   |  |" << std::endl;
-			std::cout << "|  4.)  Random Game  |     A |  |" << std::endl;
-			std::cout << "|  5.)  Exit Program |_______|  |" << std::endl;
-			std::cout << "+-------------------------------+" << std::endl;
-		}
-		if (!randPick)
-		{
-			std::cout << "Pick a game to play\n>>";
-			std::cin >> game;
-		}
-		if (game >= 1 && game <= 5)
-		{
-			if (game == 1)
-			{
-				//Julian's Game Crazy Eights
-				std::cout << "Crazy Eights selected\n" << std::endl;
-				do
-				{
-					goodPick = true;
-					std::cout << "Select how many players will be playing"
-							  << " or use 0 to run simulation mode\n>>";
-					std::cin >> playerCount;
-					if (playerCount >= 1 && playerCount <= 8)
-					{
-						CrazyEight c8(playerCount);
-						c8.playGame();
+	int gameSelect;
+	int userIn;
+	int sim;
 
-					}
-					else if (playerCount == 0)
-					{
-						CrazyEight c8(playerCount);
-						c8.simGame();
-					}
-					else
-					{
-						goodPick = false;
-						std::cout << "Invalid Player selection, enter a value"
-								  << " between 1 and 8\n" << std::endl;
-						std::cin.clear();
-						std::cin.ignore(100, '\n');
-					}
-				}while (!goodPick);
-				randPick = false;
-			}
-			else if (game == 2)
-			{
-				//Josh's Game of Black Jack
-				std::cout << "Black Jack Selected\n" << std::endl;
-				do
-				{
-					goodPick = true;
-					std::cout << "Select how many players will be playing"
-							  << " Black Jack\n>>";
-					std::cin >> playerCount;
-					if (playerCount >= 1 && playerCount <= 5)
-					{
-						Blackjack newGame(playerCount);
-						newGame.playGame();
-					}
-					else
-					{
-						goodPick = false;
-						std::cout << "Invalid Player selection, enter a value"
-								  << " between 1 and 5\n" << std::endl;
-						std::cin.clear();
-						std::cin.ignore(100, '\n');
-					}
-				}while (!goodPick);
-				randPick = false;
-			}
-			else if (game == 3)
-			{
-				//Ryan's game of War
-				std::cout << "Game of War was selected\n" << std::endl;
-				War newWar;
-				newWar.playWar();
-				randPick = false;
-			}
-			else if (game == 4)
-			{
-				//Game Randomizer
-				randPick = true;
-				game = rand() % 3 + 1;
-			}
-			else
-			{
-				std::cout << "Exiting game now. Thank you Good bye!\n";
-				playing = false;
-			}
+	gameSelect = 0;
+	do	{
+
+		if (gameSelect == 0){
+			system("cls");
+			cout << "\n+-------------------------------+" << endl;
+			cout << "|      pick a Game to play      |" << endl;
+			cout << "|                     _______   |" << endl;
+			cout << "|  1.)  Crazy Eights |       |  |" << endl;
+			cout << "|  2.)  Black Jack   | A     |  |" << endl;
+			cout << "|  3.)  War          |   " << char(6) << "   |  |" << endl;
+			cout << "|  4.)  Random Game  |     A |  |" << endl;
+			cout << "|  5.)  Exit Program |_______|  |" << endl;
+			cout << "+-------------------------------+" << endl;
+
+			cout << "Pick a game to play\n>>";
+
+			gameSelect = getValidInput(1, 5);
 		}
-		else
+
+		switch (gameSelect){
+		case CRAZY_EIGHTS:
+			{
+			    cout << "Crazy Eights selected "<< endl;
+				cout << "Select how many players will be playing?"
+					<< " or use 0 to run simulation mode\n>>";
+				userIn = getValidInput(0, 20);
+				sim = false;
+				if (userIn == 0){
+					cout << "How many players to sim?" << endl;
+					userIn = getValidInput(0, 20);
+					sim = true;
+				}
+				CrazyEight c8(userIn);
+
+				if (sim)	{
+					c8.simGame();
+				} else	{
+					c8.playGame();
+				}
+				gameSelect = 0;
+			}
+
+			break;
+		case BLACK_JACK:
+			{
+				cout << "Black Jack selected" << endl;
+				cout << "Select how many players will be playing?" << endl;
+				userIn = getValidInput(0, 5);
+				Blackjack newGame(userIn);
+				gameSelect = 0;
+			}
+			break;
+		case WAR:
 		{
-			std::cout << "Invalid choice\n" << std::endl;
-			std::cin.clear();
-			std::cin.ignore(100, '\n');
+			cout << "Way selected" << endl;
+			War newWar;
+			newWar.playWar();
+			gameSelect = 0;
+			break;
 		}
-	}while (playing);
+		case RANDOM_GAME:
+			gameSelect = rand() % 3 + 1;
+			break;
+		case EXIT:
+		default:
+			playing = false;
+			break;
+		}
+	} while (playing);
 	return 0;
+}
+
+
+int getValidInput(int min, int max){
+	int input;
+	bool valid;
+	do{
+		cin >> input;
+		if (cin.fail() || input<min || input >max){
+			cout << "invalid entry! Try again" << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+			valid = false;
+		} else{
+			valid = true;
+		}
+	} while (!valid);	
+	return input;
 }
