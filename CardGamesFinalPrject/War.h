@@ -9,12 +9,13 @@
  * @DateBuilt  4/22/2021
  * @lastModified 4/26/2021
  */
+#ifndef WAR_H
+#define WAR_H
 #include "queue.h"
 #include "stack.h"
+#include "deckOfCards.h"
 #include <iostream>
 
-// using a typedef to make the deckOfCards Class shorter to use in my class
-typedef deckOfCards doc;
 
 // using typedef to make the long long unsigned int shorter to use in the sim
 // speed variable
@@ -56,7 +57,7 @@ public:
 	/// pick which way they would want to play. 1 player vs computer, player vs
 	/// player, or a full simulation.
 	/// </summary>
-	void warMenu();
+	void playWar();
 
 	/// <summary>
 	/// Finalizes an instance of the <see cref="War"/> class.
@@ -67,7 +68,7 @@ private:
 	/// <summary>
 	/// Pointer to the deck of cards that is used to play
 	/// </summary>
-	doc* _cards;
+	deckOfCards* _cards;
 
 	/// <summary>
 	/// The number players {0,1,2}
@@ -232,6 +233,8 @@ private:
 		}p2_;
 	}_p_;
 };//end class War
+#endif
+
 
 /******************************************************************************
  in-line class Implementation ************************************************/
@@ -259,7 +262,7 @@ inline War::War(int players)
 
 }//end War overloaded constructor
 
-inline void War::warMenu()
+inline void War::playWar()
 {
 	int pick = 0;
 
