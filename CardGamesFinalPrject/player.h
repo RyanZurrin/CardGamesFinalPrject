@@ -10,7 +10,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "deckOfCards.h"
 #include "CardList.h"
 
 using namespace std;
