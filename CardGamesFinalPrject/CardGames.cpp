@@ -48,17 +48,23 @@ int main(){
 			if (game == 1)
 			{
 				//Julian's Game Crazy Eights
-				std::cout << "Crazy Eights selected" << std::endl;
+				std::cout << "Crazy Eights selected\n" << std::endl;
 				do
 				{
 					goodPick = true;
-					std::cout << "Select how many players will be playing\n>>";
+					std::cout << "Select how many players will be playing"
+							  << " or use 0 to run simulation mode\n>>";
 					std::cin >> playerCount;
 					if (playerCount >= 1 && playerCount <= 8)
 					{
 						CrazyEight c8(playerCount);
 						c8.playGame();
 
+					}
+					else if (playerCount == 0)
+					{
+						CrazyEight c8(playerCount);
+						c8.simGame();
 					}
 					else
 					{
@@ -74,14 +80,33 @@ int main(){
 			else if (game == 2)
 			{
 				//Josh's Game of Black Jack
-				std::cout << "Black Jack Selected" << std::endl;
-				Blackjack newGame;
-				newGame.playGame();
+				std::cout << "Black Jack Selected\n" << std::endl;
+				do
+				{
+					goodPick = true;
+					std::cout << "Select how many players will be playing"
+							  << " Black Jack\n>>";
+					std::cin >> playerCount;
+					if (playerCount >= 1 && playerCount <= 5)
+					{
+						Blackjack newGame(playerCount);
+						newGame.playGame();
+					}
+					else
+					{
+						goodPick = false;
+						std::cout << "Invalid Player selection, enter a value"
+								  << " between 1 and 5\n" << std::endl;
+						std::cin.clear();
+						std::cin.ignore(100, '\n');
+					}
+				}while (!goodPick);
 				randPick = false;
 			}
 			else if (game == 3)
 			{
 				//Ryan's game of War
+				std::cout << "Game of War was selected\n" << std::endl;
 				War newWar;
 				newWar.playWar();
 				randPick = false;
