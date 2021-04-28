@@ -20,7 +20,6 @@ int main(){
 	bool goodPick;
 	bool randPick = false;
 	int game = 0;
-	int randomPicked;
 	int playerCount = 2;
 	int gameType = 1;
 	do
@@ -68,7 +67,6 @@ int main(){
 					}
 				}while (!goodPick);
 				randPick = false;
-
 			}
 			else if (game == 2)
 			{
@@ -102,7 +100,5 @@ int main(){
 			std::cin.ignore(100, '\n');
 		}
 	}while (playing);
-
-
 	return 0;
 }
