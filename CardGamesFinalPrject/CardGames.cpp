@@ -57,6 +57,7 @@ int main(){
 					if (playerCount >= 1 && playerCount <= 8)
 					{
 						CrazyEight c8(playerCount);
+						c8.playGame();
 
 					}
 					else
