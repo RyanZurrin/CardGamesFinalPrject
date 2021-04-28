@@ -7,8 +7,8 @@
 #define BLACKJACK_H
 
 #include <iostream>
-#include "player.h"
 #include "CardList.h"
+#include "deckOfCards.h"
 
 using namespace std;
 
@@ -16,17 +16,21 @@ class Blackjack
 {
 private:
 	int playerVal[5];
+	int splitVal[5];
 	int pSoftAceCount[5];
-	bool isBlackjack[5];
+	int spSoftAceCount[5];
+	//bool isBlackjack[5];
+	bool isSplit[5];
 	int dealerVal;
 	int dSoftAceCount;
 	int numPlayers;
 	deckOfCards deck;
 	CardList playerCards[5];
 	CardList dealerCards;
-	//CardList splitHand;
-	//bool split();
-	int hit(int);
+	CardList splitHand[5];
+	
+	bool split(int i);
+	int hit(int, int);
 	void dealCards();
 	void clearHands();
 	void stand();
@@ -56,12 +60,22 @@ Blackjack::Blackjack(int p)
 	{
 		playerVal[i] = 0;
 		pSoftAceCount[i] = 0;
-		isBlackjack[i] = false;
+		splitVal[i] = 0;
+		spSoftAceCount[i] = 0;
+		isSplit[i] = false;
+		//isBlackjack[i] = false;
 		
 	}
 	dealerVal = 0;
 	dSoftAceCount = 0;
-	numPlayers = p;
+	if(numPlayers > p)
+	{
+		cout << "The maximum player count is 5" << endl;
+		numPlayers = 5;
+	}
+	else
+		numPlayers = p;
+		
 	deck.shuffleDeck();
 	playGame();
 }
@@ -90,16 +104,16 @@ void Blackjack::playGame()
 				do
 				{
 					cout << "Player " << i + 1 << "'s turn:" << endl;
-					cout << "[h] to hit, [s] to stand"; //, [/] to split: ";
+					cout << "[h] to hit, [s] to stand, [/] to split: ";
 					cin >> input;
-					if (input != "h" && input != "s")// && input != "/")
+					if (input != "h" && input != "s" && input != "/")
 						cout << "Invalid choice. Please try again" << endl;
 	
-				} while (input != "h" && input != "s");// && input != "/");
+				} while (input != "h" && input != "s" && input != "/");
 	
 				if (input == "h")
 				{
-					pVal = hit(i);
+					pVal = hit(i, 1);
 					display(false);
 					if (pVal >= 21)
 					{
@@ -112,12 +126,50 @@ void Blackjack::playGame()
 					gameOver[i] = true;
 					display(false);
 				}
-				/*
+				
 				else if (input == "/")
 				{
-					isSplit = split(i); //Function call
+					if(isSplit[i])
+						cout << "Hand is already split. Can't split again" << endl;
+					else
+					{
+						isSplit[i] = split(i); 
+						display(false);
+					}
 				}
-				*/
+			}
+			if(isSplit[i])
+			{
+				gameOver[i] = false;
+				
+				while(!gameOver[i])
+				{
+					do
+					{
+						cout << "Player " << i + 1 << "'s turn:" << endl;
+						cout << "[h] to hit, [s] to stand";
+						cin >> input;
+						if (input != "h" && input != "s")
+							cout << "Invalid choice. Please try again" << endl;
+		
+					} while (input != "h" && input != "s");
+		
+					if (input == "h")
+					{
+						pVal = hit(i, 2);
+						display(false);
+						if (pVal >= 21)
+						{
+							gameOver[i] = true;
+							display(false);
+						}
+					}
+					else if (input == "s")
+					{
+						gameOver[i] = true;
+						display(false);
+					}
+				}
 			}
 		}
 		
@@ -130,11 +182,21 @@ void Blackjack::playGame()
 				cout << "Player " << i + 1 << " won!" << endl;
 			else
 				cout << "Player " << i + 1 << " tied!" << endl;
+				
+			if(isSplit[i])
+			{
+				if((splitVal[i] < dealerVal && dealerVal <= 21) || splitVal[i] > 21)
+					cout << "Player " << i + 1 << " lost the 2nd hand!" << endl;
+				else if (splitVal[i] > dealerVal || dealerVal > 21)
+					cout << "Player " << i + 1 << " won the 2nd hand!" << endl;
+				else
+					cout << "Player " << i + 1 << " tied the 2nd hand!" << endl;
+			}
 		}
 		
-		cout << "Press 'n' to quit, or any other key to play again" << endl;
+		cout << "Press 'x' to quit, or any other key to play again" << endl;
 		cin >> input;
-	}while (input != "n" && input != "N");
+	}while (input != "x" && input != "X");
 }
 
 void Blackjack::stand()
@@ -146,60 +208,85 @@ void Blackjack::stand()
 	display(true);
 }
 
-int Blackjack::hit(int p)
+int Blackjack::hit(int p, int handNum)
 {
+	int val = 0;
+	int ace = 0;
 	string str = deck.takeCard();
 	cardNode c;
 	c.face = str[0];
 	c.suit = str[1];
-	playerCards[p].addItem(c);
+	
+	if(handNum == 1)
+		playerCards[p].addItem(c);
+	else
+		splitHand[p].addItem(c);
+		
 	switch (c.face)
 	{
 		case '1':
-			playerVal[p] += 1;
+			val = 1;
 			break;
 		case '2':
-			playerVal[p] += 2;
+			val = 2;
 			break;
 		case '3':
-			playerVal[p] += 3;
+			val = 3;
 			break;
 		case '4':
-			playerVal[p] += 4;
+			val = 4;
 			break;
 		case '5':
-			playerVal[p] += 5;
+			val = 5;
 			break;
 		case '6':
-			playerVal[p] += 6;
+			val = 6;
 			break;
 		case '7':
-			playerVal[p] += 7;
+			val = 7;
 			break;
 		case '8':
-			playerVal[p] += 8;
+			val = 8;
 			break;
 		case '9':
-			playerVal[p] += 9;
+			val = 9;
 			break;
 		case 'T':
 		case 'J':
 		case 'Q':
 		case 'K':
-			playerVal[p] += 10;
+			val = 10;
 			break;
 		case 'A':
-			playerVal[p] += 11;
-			pSoftAceCount[p]++;
+			val = 11;
+			ace = 1;
 			break;
 	}
-
-	if (playerVal[p] > 21 && pSoftAceCount[p] > 0)
+	
+	if(handNum == 1)
 	{
-		playerVal[p] -= 10;
-		pSoftAceCount[p]--;
+		playerVal[p] += val;
+		pSoftAceCount[p] += ace;
+		
+		if (playerVal[p] > 21 && pSoftAceCount[p] > 0)
+		{
+			playerVal[p] -= 10;
+			pSoftAceCount[p]--;
+		}
+			return playerVal[p];
 	}
-		return playerVal[p];
+	else
+	{
+		splitVal[p] += val;
+		spSoftAceCount[p] += ace;
+		
+		if (splitVal[p] > 21 && spSoftAceCount[p] > 0)
+		{
+			splitVal[p] -= 10;
+			spSoftAceCount[p]--;
+		}
+			return splitVal[p];
+	}
 }
 
 void Blackjack::dealerHit()
@@ -257,14 +344,52 @@ void Blackjack::dealerHit()
 	}
 }
 
+bool Blackjack::split(int i)
+{
+	if(playerCards[i].getQuantity() == 2)
+	{
+		cardNode temp[2];
+		playerCards[i].getCards(temp, 2);
+		if(temp[0].face == temp[1].face)
+		{
+			if(temp[1].face != 'A')
+			{
+				splitHand[i].addItem(temp[1]);
+				playerCards[i].removeItem(temp[1]);
+				playerVal[i] /= 2;
+				splitVal[i] = playerVal[i];
+			}
+			else
+			{
+				splitHand[i].addItem(temp[1]);
+				playerCards[i].removeItem(temp[1]);
+				splitVal[i] = playerVal[i] = 11;
+				pSoftAceCount[i] = spSoftAceCount[i] = 1;
+			}
+			hit(i, 1);
+			hit(i, 2);
+			return true;
+		}
+		else
+		{
+			cout << "You can only split when you have 2 cards with the same value" << endl;
+			return false;
+		}
+	}
+	else
+	{
+		cout << "You can only split when you have 2 cards with the same value" << endl;
+	}
+}
+
 void Blackjack::dealCards()
 {
 	dealerHit();
 	dealerHit(); //Deals 2 cards to dealer
 	for(int i = 0; i < numPlayers; i++)
 	{
-		hit(i);
-		hit(i); //Deals 2 cards to player
+		hit(i, 1);
+		hit(i, 1); //Deals 2 cards to each player
 	}
 	display(false);
 }
@@ -276,6 +401,10 @@ void Blackjack::clearHands()
 		playerCards[i].clearList();
 		playerVal[i] = 0;
 		pSoftAceCount[i] = 0;
+		splitHand[i].clearList();
+		splitVal[i] = 0;
+		spSoftAceCount[i] = 0;
+		isSplit[i] = false;
 	}
 	dealerCards.clearList();
 	dealerVal = 0;
@@ -302,8 +431,18 @@ void Blackjack::display(bool showAll)
 	
 	for(int i = 0; i < numPlayers; i++)
 	{
-		cout << "Player " << i + 1 << " hand: " << playerVal[i] << endl;
-		playerCards[i].displayAll();
+		if(!isSplit[i])
+		{
+			cout << "Player " << i + 1 << " hand: " << playerVal[i] << endl;
+			playerCards[i].displayAll();
+		}
+		else
+		{
+			cout << "Player " << i + 1 << " hand 1: " << playerVal[i] << endl;
+			playerCards[i].displayAll();
+			cout << "Player " << i + 1 << " hand 2: " << splitVal[i] << endl;
+			splitHand[i].displayAll();
+		}
 	}
 }
 
