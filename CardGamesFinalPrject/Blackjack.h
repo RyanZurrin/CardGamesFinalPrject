@@ -20,11 +20,15 @@ private:
 	int splitVal[5];
 	int pSoftAceCount[5];
 	int spSoftAceCount[5];
-	//bool isBlackjack[5];
+	bool isBlackjack[5];
 	bool isSplit[5];
+	bool dBlackjack;
 	int dealerVal;
 	int dSoftAceCount;
 	int numPlayers;
+	double playerMoney[5];
+	int playerBet[5];
+	double dealerMoney;
 	deckOfCards deck;
 	CardList playerCards[5];
 	CardList dealerCards;
@@ -49,8 +53,13 @@ Blackjack::Blackjack()
 	playerVal[0] = 0;
 	dealerVal = 0;
 	pSoftAceCount[0] = 0;
+	playerMoney[0] = 200.00;
+	playerBet[0] = 0;
+	dealerMoney = 200.00;
 	dSoftAceCount = 0;
 	numPlayers = 1;
+	isBlackjack[0] = false;
+	dBlackjack = false;
 	deck.shuffleDeck();
 	playGame();
 }
@@ -62,13 +71,18 @@ Blackjack::Blackjack(int p)
 		playerVal[i] = 0;
 		pSoftAceCount[i] = 0;
 		splitVal[i] = 0;
+		playerMoney[i] = 200.00;
+		playerBet[i] = 0;
 		spSoftAceCount[i] = 0;
 		isSplit[i] = false;
-		//isBlackjack[i] = false;
-
+		isBlackjack[i] = false;
 	}
+	
 	dealerVal = 0;
 	dSoftAceCount = 0;
+	dealerMoney = 200.00;
+	dBlackjack = false;
+	
 	if(p > 5)
 	{
 		cout << "The maximum player count is 5" << endl;
@@ -85,121 +99,237 @@ void Blackjack::playGame()
 {
 	string input;
 	int pVal;
-	const int playerCount = numPlayers;
+	int totalBet;
+	//const int playerCount = numPlayers;
 	//bool gameOver[playerCount]; //changed by JS delete at bottom
 	bool* gameOver = new bool[numPlayers];
 
 	do
 	{
 		clearHands();
-		dealCards();
+		totalBet = 0;
+		
 		for(int i = 0; i < numPlayers; i++)
 		{
-			gameOver[i] = false;
-
-			if(playerVal[i] == 21)
+			if(playerMoney[i] < 5)
 			{
-				gameOver[i] = true;
-
+				playerBet[i] = 0;
+				cout << "Player " << i+1 << "does not have enough money to play" << endl;
 			}
-
-			while(!gameOver[i])
+			else
 			{
+				bool isValid;
+				system("cls");
 				do
 				{
-					cout << "Player " << i + 1 << "'s turn:" << endl;
-					cout << "[h] to hit, [s] to stand, [/] to split: ";
+					cout << "Player " << i+1 << ": $" << playerMoney[i] << endl;
+					cout << "Choose your bet" << endl;
+					cout << "[1] = $5" << endl;
+					cout << "[2] = $10" << endl;
+					cout << "[3] = $20" << endl;
 					cin >> input;
-					if (input != "h" && input != "s" && input != "/")
-						cout << "Invalid choice. Please try again" << endl;
-
-				} while (input != "h" && input != "s" && input != "/");
-
-				if (input == "h")
-				{
-					pVal = hit(i, 1);
-					display(false);
-					if (pVal >= 21)
+					
+					if(input == "1")
 					{
-						gameOver[i] = true;
-						display(false);
+						isValid = true;
+						playerBet[i] = 5;
 					}
-				}
-				else if (input == "s")
-				{
-					gameOver[i] = true;
-					display(false);
-				}
-
-				else if (input == "/")
-				{
-					if(isSplit[i])
-						cout << "Hand is already split. Can't split again" << endl;
+					else if(input == "2")
+					{
+						if(playerMoney[i] < 10)
+						{
+							isValid = false;
+							cout << "Player " << i + 1 << "only has $" << playerMoney[i] << endl;
+						}
+						else
+						{
+							isValid = true;
+							playerBet[i] = 10;
+						}
+					}
+					else if(input == "3")
+					{
+						if(playerMoney[i] < 20)
+						{
+							isValid = false;
+							cout << "Player " << i+1 << "only has $" << playerMoney[i] << endl;
+						}
+						else
+						{
+							isValid = true;
+							playerBet[i] = 20;
+						}
+					}
 					else
 					{
-						isSplit[i] = split(i);
-						display(false);
-					}
-				}
+						isValid = false;
+						cout << "Invalid choice. Please try again" << endl;
+					}	
+				}while(!isValid);
+				totalBet += playerBet[i];
 			}
-			if(isSplit[i])
+			
+		}
+		
+		if(dealerMoney >= totalBet && totalBet > 0)
+		{
+			dealCards();
+			for(int i = 0; i < numPlayers; i++)
 			{
-				gameOver[i] = false;
-
-				while(!gameOver[i])
+				if(playerBet[i] != 0)
 				{
-					do
+					gameOver[i] = false;
+		
+					if(playerVal[i] == 21)
 					{
-						cout << "Player " << i + 1 << "'s turn:" << endl;
-						cout << "[h] to hit, [s] to stand";
-						cin >> input;
-						if (input != "h" && input != "s")
-							cout << "Invalid choice. Please try again" << endl;
-
-					} while (input != "h" && input != "s");
-
-					if (input == "h")
+						
+						gameOver[i] = true;
+		
+					}
+		
+					while(!gameOver[i])
 					{
-						pVal = hit(i, 2);
-						display(false);
-						if (pVal >= 21)
+						do
+						{
+							cout << "Player " << i + 1 << "'s turn:" << endl;
+							cout << "[h] to hit, [s] to stand, [/] to split: ";
+							cin >> input;
+							if (input != "h" && input != "s" && input != "/")
+								cout << "Invalid choice. Please try again" << endl;
+		
+						} while (input != "h" && input != "s" && input != "/");
+		
+						if (input == "h")
+						{
+							pVal = hit(i, 1);
+							display(false);
+							if (pVal >= 21)
+							{
+								gameOver[i] = true;
+								display(false);
+							}
+						}
+						else if (input == "s")
 						{
 							gameOver[i] = true;
 							display(false);
 						}
+		
+						else if (input == "/")
+						{
+							if(isSplit[i])
+								cout << "Hand is already split. Can't split again" << endl;
+							else
+							{
+								isSplit[i] = split(i);
+								
+								if(isSplit[i])
+									display(false);
+							}
+						}
 					}
-					else if (input == "s")
+					if(isSplit[i])
 					{
-						gameOver[i] = true;
-						display(false);
+						gameOver[i] = false;
+		
+						while(!gameOver[i])
+						{
+							do
+							{
+								cout << "Player " << i + 1 << "'s turn:" << endl;
+								cout << "[h] to hit, [s] to stand";
+								cin >> input;
+								if (input != "h" && input != "s")
+									cout << "Invalid choice. Please try again" << endl;
+		
+							} while (input != "h" && input != "s");
+		
+							if (input == "h")
+							{
+								pVal = hit(i, 2);
+								display(false);
+								if (pVal >= 21)
+								{
+									gameOver[i] = true;
+									display(false);
+								}
+							}
+							else if (input == "s")
+							{
+								gameOver[i] = true;
+								display(false);
+							}
+						}
 					}
 				}
+				
 			}
-		}
-
-		stand();
-		for(int i = 0; i < numPlayers; i++)
-		{
-			if((playerVal[i] < dealerVal && dealerVal <= 21) || playerVal[i] > 21)
-				cout << "Player " << i + 1 << " lost!" << endl;
-			else if (playerVal[i] > dealerVal || dealerVal > 21)
-				cout << "Player " << i + 1 << " won!" << endl;
-			else
-				cout << "Player " << i + 1 << " tied!" << endl;
-
-			if(isSplit[i])
+	
+			stand();
+			for(int i = 0; i < numPlayers; i++)
 			{
-				if((splitVal[i] < dealerVal && dealerVal <= 21) || splitVal[i] > 21)
-					cout << "Player " << i + 1 << " lost the 2nd hand!" << endl;
-				else if (splitVal[i] > dealerVal || dealerVal > 21)
-					cout << "Player " << i + 1 << " won the 2nd hand!" << endl;
+				if((playerVal[i] < dealerVal && dealerVal <= 21) || playerVal[i] > 21)
+				{
+					playerMoney[i] -= playerBet[i];
+					dealerMoney += playerBet[i];
+					cout << "Player " << i + 1 << " lost $" << playerBet[i] << endl;
+				}	
+				else if (playerVal[i] > dealerVal || dealerVal > 21)
+				{
+					playerMoney[i] += playerBet[i];
+					dealerMoney -= playerBet[i];
+					cout << "Player " << i + 1 << " won! $" << playerBet[i] << endl;
+				}		
 				else
-					cout << "Player " << i + 1 << " tied the 2nd hand!" << endl;
+				{
+					cout << "Player " << i + 1 << " tied!" << endl;
+				}
+	
+				if(isSplit[i])
+				{
+					if((splitVal[i] < dealerVal && dealerVal <= 21) || splitVal[i] > 21)
+					{
+						playerMoney[i] -= playerBet[i];
+						dealerMoney += playerBet[i];
+						cout << "Player " << i + 1 << " lost $" << playerBet[i] << " from the 2nd hand!" << endl;
+					}				
+					else if (splitVal[i] > dealerVal || dealerVal > 21)
+					{
+						playerMoney[i] += playerBet[i];
+						dealerMoney -= playerBet[i];
+						cout << "Player " << i + 1 << " won $" << playerBet[i] << " from the 2nd hand!" << endl;
+					}	
+					else
+					{
+						cout << "Player " << i + 1 << " tied the 2nd hand!" << endl;
+					}
+						
+				}
 			}
+			
+			cout << endl;
+			cout << "Dealer: $" << dealerMoney << endl;
+			
+			//Loop to display player's money after game
+			for(int i = 0; i < numPlayers; i++)
+			{
+				cout << "Player " << i+1 << ": $" << playerMoney[i] << endl;
+			}
+			
+			cout << "Press 'x' to quit, or any other key to play again" << endl;
+			cin >> input;
 		}
-
-		cout << "Press 'x' to quit, or any other key to play again" << endl;
-		cin >> input;
+		else
+		{
+			if(dealerMoney < totalBet)
+				cout << "The dealer does not have enough money to keep playing." << endl;
+			else
+				cout << "The players do not have enough money to keep playing." << endl;
+			cout << "Press enter to exit" << endl;
+			cin >> input;
+			input = "x";
+		}
+		
 	}while (input != "x" && input != "X");
 
 
@@ -354,6 +484,12 @@ void Blackjack::dealerHit()
 
 bool Blackjack::split(int i)
 {
+	if(playerBet[i] * 2 > playerMoney[i])
+	{
+		cout << "Player does not have enough money to split" << endl;
+		return false;
+	}
+	
 	if(playerCards[i].getQuantity() == 2)
 	{
 		cardNode temp[2];
@@ -387,6 +523,7 @@ bool Blackjack::split(int i)
 	else
 	{
 		cout << "You can only split when you have 2 cards with the same value" << endl;
+		return false;
 	}
 }
 
@@ -396,8 +533,11 @@ void Blackjack::dealCards()
 	dealerHit(); //Deals 2 cards to dealer
 	for(int i = 0; i < numPlayers; i++)
 	{
-		hit(i, 1);
-		hit(i, 1); //Deals 2 cards to each player
+		if(playerBet[i] != 0)
+		{
+			hit(i, 1);
+			hit(i, 1); //Deals 2 cards to each player
+		}
 	}
 	display(false);
 }
@@ -412,6 +552,7 @@ void Blackjack::clearHands()
 		splitHand[i].clearList();
 		splitVal[i] = 0;
 		spSoftAceCount[i] = 0;
+		playerBet[i] = 0;
 		isSplit[i] = false;
 	}
 	dealerCards.clearList();
@@ -439,18 +580,25 @@ void Blackjack::display(bool showAll)
 
 	for(int i = 0; i < numPlayers; i++)
 	{
-		if(!isSplit[i])
+		if(playerVal != 0)
 		{
-			cout << "Player " << i + 1 << " hand: " << playerVal[i] << endl;
-			playerCards[i].displayAll();
+			if(!isSplit[i])
+			{
+				cout << "Player " << i + 1 << " hand: " << playerVal[i] << endl;
+				playerCards[i].displayAll();
+				cout << endl;
+			}
+			else
+			{
+				cout << "Player " << i + 1 << " hand 1: " << playerVal[i] << endl;
+				playerCards[i].displayAll();
+				cout << endl;
+				cout << "Player " << i + 1 << " hand 2: " << splitVal[i] << endl;
+				splitHand[i].displayAll();
+				cout << endl;
+			}
 		}
-		else
-		{
-			cout << "Player " << i + 1 << " hand 1: " << playerVal[i] << endl;
-			playerCards[i].displayAll();
-			cout << "Player " << i + 1 << " hand 2: " << splitVal[i] << endl;
-			splitHand[i].displayAll();
-		}
+		
 	}
 }
 
