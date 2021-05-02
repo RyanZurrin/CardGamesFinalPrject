@@ -11,10 +11,10 @@
  */
 #ifndef WAR_H
 #define WAR_H
-#include "queue.h"
-#include "stack.h"
 #include "deckOfCards.h"
 #include <iostream>
+#include "discardPile.h"
+#include "playPile.h"
 
 
 // using typedef to make the long long unsigned int shorter to use in the sim
@@ -80,9 +80,14 @@ private:
 	int totalRounds;
 
 	/// <summary>
-	/// The total wars had in a game
+	/// The total wars won by player 1
 	/// </summary>
-	int totalWars;
+	int p1WarWins;
+
+	/// <summary>
+	/// The total wars wond by player 2
+	/// </summary>
+	int p2WarWins;
 
 	/// <summary>
 	/// The end game keeps running the game if not true
@@ -187,12 +192,12 @@ private:
 		/// </summary>
 		struct p1
 		{
-			Queue<std::string>* pile1;
-			Stack<std::string>* discard1;
+			PlayPile<std::string>* pile1;
+			DiscardPile<std::string>* discard1;
 			p1()
 			{
-				pile1    = new Queue<std::string>(52);
-				discard1 = new Stack<std::string>(52);
+				pile1    = new PlayPile<std::string>(52);
+				discard1 = new DiscardPile<std::string>(52);
 			}
 			~p1()
 			{
@@ -211,12 +216,12 @@ private:
 		/// </summary>
 		struct p2
 		{
-			Queue<std::string>* pile2;
-			Stack<std::string>* discard2;
+			PlayPile<std::string>* pile2;
+			DiscardPile<std::string>* discard2;
 			p2()
 			{
-				pile2    = new Queue<std::string>(52);
-				discard2 = new Stack<std::string>(52);
+				pile2    = new PlayPile<std::string>(52);
+				discard2 = new DiscardPile<std::string>(52);
 			}
 			~p2()
 			{
@@ -242,7 +247,8 @@ inline War::War()
 {
 	numPlayers = 0;
 	totalRounds = 0;
-	totalWars = 0;
+	p1WarWins = 0;
+	p2WarWins = 0;
 	_cards = new deckOfCards(1);
 	endGame = false;
 	winner = false;
@@ -253,7 +259,8 @@ inline War::War(int players)
 {
 	numPlayers = players;
 	totalRounds = 0;
-	totalWars = 0;
+	p1WarWins = 0;
+	p2WarWins = 0;
 	_cards = new deckOfCards(1);
 	endGame = false;
 	winner = false;
@@ -363,6 +370,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 				{
 					std::cout << "\nPlayer one won the War!\n";
 					delayGame();
+					p1WarWins++;
 					atWar = false;
 				}
 				else
@@ -385,7 +393,8 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 				{
 					std::cout << "\nThe computer SIM 1 won that war!";
 					atWar = false;
-					delayGame(SIM_SPEED*2);
+					p1WarWins++;
+					delayGame(SIM_SPEED*100);
 				}
 				else
 				{
@@ -412,6 +421,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 				{
 					std::cout << "\nThe Computer won that war!\n";
 					delayGame();
+					p2WarWins++;
 					atWar = false;
 				}
 				else
@@ -434,6 +444,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 				{
 					std::cout << "\nPlayer two won that war!\n";
 					delayGame();
+					p2WarWins++;
 					atWar = false;
 				}
 				else
@@ -456,7 +467,8 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 				{
 					std::cout << "\nThe computer SIM 2 won that war!\n";
 					atWar = false;
-					delayGame(SIM_SPEED*2);
+					p2WarWins++;
+					delayGame(SIM_SPEED*100);
 				}
 				else
 				{
@@ -485,7 +497,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 				atWar = true;
 				_p_.p1_.playCard();
 				_p_.p2_.playCard();
-				recur++; totalWars++;
+				recur++;
 				flip1();
 
 			}
@@ -498,7 +510,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 				atWar = true;
 				_p_.p1_.playCard();
 				_p_.p2_.playCard();
-				recur++; totalWars++;
+				recur++;
 				flip2();
 			}
 			else
@@ -508,7 +520,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 				atWar = true;
 				_p_.p1_.playCard();
 				_p_.p2_.playCard();
-				recur++; totalWars++;
+				recur++;
 				flip0();
 			}
 		}
@@ -517,7 +529,7 @@ inline void War::playRound(std::string& p1Card, std::string& p2Card)
 	}
 	if ((numPlayers == 1 || numPlayers == 2) && recur == 0 )
 	{
-		system("pause");
+		delayGame(1000000000);
 	}
 
 }//end method playRound
@@ -669,20 +681,24 @@ inline bool War::checkForWinner()
 	{//player one runs out of cards and player two is the winner
 		if (numPlayers == 2)
 		{
-			std::cout << "\nPlayer 2 has won the game in "<< totalRounds
-					  << " rounds having " << totalWars << " wars total!\n";
+			std::cout << "\nPlayer 2 has won the game in " << totalRounds
+				<< " rounds having " << p1WarWins + p2WarWins << " wars total\n"
+				<< "and winning a total of " << p2WarWins
+				<< " of those wars!" << std::endl;
 		}
 		else if (numPlayers == 1)
 		{
 			std::cout << "\nThe Computer opponent won this game in "
-					  << totalRounds <<" rounds having " << totalWars
-					  << " wars total!\n";
+					  << totalRounds <<" rounds having " << p1WarWins+p2WarWins
+					  << " wars total\nand winning a total of " << p2WarWins
+					  << " of those wars!" << std::endl;
 		}
 		else
 		{
 			std::cout << "\nComputer SIM 2 has Won this game in "
-					  << totalRounds <<" rounds having " << totalWars
-					  << " wars total!\n";
+					  << totalRounds <<" rounds having " << p1WarWins+p2WarWins
+					  << " wars total\nand winning a total of " << p2WarWins
+					  << " of those wars!" << std::endl;
 		}
 		winner = true;
 		return true;
@@ -692,14 +708,16 @@ inline bool War::checkForWinner()
 		if (numPlayers == 2 || numPlayers == 1)
 		{
 			std::cout << "\nPlayer 1 has won the game in "<< totalRounds
-					  << " rounds having " << totalWars
-					  << " wars total!\n";
+					  << " rounds having " << p1WarWins+p2WarWins
+					  << " wars total\nand winning a total of " << p1WarWins
+					  << " of those wars!" << std::endl;
 		}
 		else
 		{
 			std::cout << "\nComputer SIM 1 has Won this game in "
-					  << totalRounds <<" rounds having " << totalWars
-					  << " wars total!\n";
+					  << totalRounds <<" rounds having " << p1WarWins+p2WarWins
+					  << " wars total\nand winning a total of " << p1WarWins
+					  << " of those wars!" << std::endl;
 		}
 		winner = true;
 		return true;
