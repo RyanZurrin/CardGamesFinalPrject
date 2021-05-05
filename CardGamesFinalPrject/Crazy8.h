@@ -13,10 +13,6 @@
 #include "deckOfCards.h"
 #include "player.h"
 
-//TODO
-//Test test
-//clean up;
-//remove some couts<<
 
 using namespace std;
 
@@ -27,8 +23,6 @@ public:
 
 	void playGame();
 	void simGame();
-
-
 
 private:
 	deckOfCards* deck;
@@ -51,6 +45,7 @@ private:
 	int getValidInput(int min, int max);
 	void mixBackIn();
 
+	void calcScore();
 
 };
 
@@ -64,9 +59,7 @@ void CrazyEight::sim(){
 	int currPlayer = 0;
 	int currPlaycardCount;
 
-
 	string topCard;
-
 
 	do{
 		c8Deck.shuffleCards();
@@ -93,10 +86,13 @@ void CrazyEight::sim(){
 
 		currPlaycardCount = players[currPlayer].getCardCount();
 		playersCards = new cardNode[currPlaycardCount];
-		players[currPlayer].getHand(playersCards, players[currPlayer].getCardCount());
+		players[currPlayer].getHand(playersCards,
+			players[currPlayer].getCardCount());
 
-		cout << "Player " << currPlayer + 1 << "'s turn. What Card to play? (1 through " << players[currPlayer].getCardCount() << ") or "
-			<< currPlaycardCount + 1 << " to draw new card. 0 to exit" << endl;
+		cout << "Player " << currPlayer + 1
+			<< "'s turn. What Card to play? (1 through "
+			<< players[currPlayer].getCardCount() << ") or "
+			<< currPlaycardCount + 1<<" to draw new card. 0 to exit" << endl;
 
 		players[currPlayer].showAllCards();
 
@@ -182,10 +178,13 @@ void CrazyEight::play(){
 
 		currPlaycardCount = players[currPlayer].getCardCount();
 		playersCards = new cardNode[currPlaycardCount];
-		players[currPlayer].getHand(playersCards, players[currPlayer].getCardCount());
+		players[currPlayer].getHand(playersCards,
+			players[currPlayer].getCardCount());
 
-		cout << "Player " << currPlayer + 1 << "'s turn. What Card to play? (1 through " << players[currPlayer].getCardCount() << ") or "
-			<< currPlaycardCount + 1 << " to draw new card. 0 to exit" << endl;
+		cout << "Player " << currPlayer + 1
+			<< "'s turn. What Card to play? (1 through "
+			<< players[currPlayer].getCardCount() << ") or "
+			<< currPlaycardCount + 1 << " to draw new card. 0 to exit"<<endl;
 
 		players[currPlayer].showAllCards();
 
@@ -225,7 +224,6 @@ void CrazyEight::play(){
 
 		delete[] playersCards;
 	}
-	cout << "Hope you enjoyed crazy eights!";
 
 }
 
@@ -242,6 +240,54 @@ void CrazyEight::mixBackIn(){
 
 	c8Discard.addItem(save);
 
+}
+
+void CrazyEight::calcScore(){
+
+	int score;
+	int cardCount;
+	cardNode* playersCards;
+
+	for (int p = 0; p < numPlayers; p++){
+		cardCount = players[p].getCardCount();
+		score = 0;
+		if (cardCount){
+
+			playersCards = new cardNode[cardCount];
+			players[p].getHand(playersCards, players[p].getCardCount());
+
+			for (int c = 0; c < cardCount; c++){
+
+				switch (playersCards[c].face){
+				case 'K':
+					score += 10;
+					break;
+				case 'Q':
+					score += 10;
+					break;
+				case 'J':
+					score += 10;
+					break;
+				case 'T':
+					score += 10;
+					break;
+				case 'A':
+					score += 1;
+					break;
+				case '8':
+					score += 50;
+					break;
+				default:
+					score += (playersCards[c].face - 48);
+				}
+			}
+
+			delete[] playersCards;
+		}
+		cout << "Player " << p + 1 << " has " << cardCount << " cards left: ";
+		players[p].addScore(score * -1);
+		cout << "Score " << players[p].getScore() << endl;
+	}
 
 }
 
@@ -331,7 +377,8 @@ bool CrazyEight::playerTurn(int currPlayer){
 	cardNode chosenCard;
 	bool crazy8 = false;
 
-	players[currPlayer].getHand(playersCards, players[currPlayer].getCardCount());
+	players[currPlayer].getHand(playersCards,
+		players[currPlayer].getCardCount());
 
 
 	playerIn = getValidInput(0, cardCount + 1);
@@ -341,7 +388,8 @@ bool CrazyEight::playerTurn(int currPlayer){
 	}
 
 	if (playerIn>0&&playerIn <= cardCount){
-		cout << playersCards[playerIn - 1].face<< playersCards[playerIn - 1].suit<<endl;
+		cout << playersCards[playerIn - 1].face
+			<< playersCards[playerIn - 1].suit<<endl;
 		chosenCard = playersCards[playerIn - 1];
 
 		if (chosenCard.face == '8')	{
@@ -374,7 +422,10 @@ bool CrazyEight::playerTurn(int currPlayer){
 
 	if (crazy8)	{
 		cout << "You played an 8, choose new suit!" << endl;
-		cout << "1)" << char(HEARTS) << " 2)" << char(DIOMONDS) << " 3)" << char(CLUBS) << " 4)" << char(SPADES) << endl;
+		cout << "1)" << char(HEARTS)
+			<< " 2)" << char(DIOMONDS)
+			<< " 3)" << char(CLUBS)
+			<< " 4)" << char(SPADES) << endl;
 
 
 		playerIn = getValidInput(1, 4);
@@ -455,14 +506,15 @@ CrazyEight::CrazyEight(int numPlayers){
 		numDecks = 1;
 		handSize = 7;
 		vsPC = false;
-	} else if (this->numPlayers < 9){
+	} else if (this->numPlayers < 10){
 		numDecks = 2;
 		handSize = 5;
 		vsPC = false;
 	} else{
-		numDecks = 3;
-		handSize = 5;
-		vsPC = false;
+		numDecks = 1;
+		handSize = 7;
+		vsPC = true;
+		this->numPlayers = 2;
 	}
 
 	deck = new deckOfCards(numDecks);
@@ -474,26 +526,64 @@ CrazyEight::CrazyEight(int numPlayers){
 		players[i].createPlayer(handSize , numCards);
 	}
 
-
-
 }
 
 CrazyEight::~CrazyEight(){
 
 	delete [] players;
+
 	delete deck;
 }
 
 void CrazyEight::simGame(){
-	sim();
-	cout << "Thanks for invoking Crazy Eights!" << endl;
+
+	int wPlayer;
+	int lowScore;
+
+	do	{
+		sim();
+		calcScore();
+		cout << "Sim Agian? (1/0)" << endl;
+
+	} while (getValidInput(0,1));
+
+	wPlayer = 0;
+	lowScore = INT_MIN;
+	for (int i = 0; i < numPlayers; i++){
+		if (lowScore < players[i].getScore()){
+			lowScore = players[i].getScore();
+			wPlayer = i;
+		}
+	}
+
+	cout << "Overall Winer: Player " << wPlayer+1 << endl;
+	cout << "Thanks for playing Crazy Eights!" << endl;
 	system("pause");
 
 }
 
 void CrazyEight::playGame(){
-	play();
-	cout << "Thanks for invoking Crazy Eights!" << endl;
+	int wPlayer;
+	int lowScore;
+
+	do{
+		play();
+		calcScore();
+		cout << "Sim Agian? (1/0)" << endl;
+
+	} while (getValidInput(0, 1));
+
+	wPlayer = 0;
+	lowScore = INT_MIN;
+	for (int i = 0; i < numPlayers; i++){
+		if (lowScore < players[i].getScore()){
+			lowScore = players[i].getScore();
+			wPlayer = i;
+		}
+	}
+
+	cout << "Overall Winer: Player " << wPlayer + 1 << endl;
+	cout << "Thanks for playing Crazy Eights!" << endl;
 	system("pause");
 }
 
