@@ -7,6 +7,9 @@
 *	A driver program to play card games
 *************************************************************/
 
+
+//#define USE_SYMBOLS
+
 #include "Crazy8.h"
 #include "War.h"
 #include "Blackjack.h"
@@ -16,7 +19,7 @@ int getValidInput(int min, int max);
 
 using namespace std;
 
-typedef enum GameNames{
+enum GameNames{
 
 	CRAZY_EIGHTS = 1,
 	BLACK_JACK,
@@ -42,7 +45,7 @@ int main(){
 			cout << "|                     _______   |" << endl;
 			cout << "|  1.)  Crazy Eights |       |  |" << endl;
 			cout << "|  2.)  Black Jack   | A     |  |" << endl;
-			cout << "|  3.)  War          |   " << char(6) << "   |  |" << endl;
+			cout << "|  3.)  War          |   " << char(HEARTS) << "   |  |" << endl;
 			cout << "|  4.)  Random Game  |     A |  |" << endl;
 			cout << "|  5.)  Exit Program |_______|  |" << endl;
 			cout << "+-------------------------------+" << endl;
@@ -59,11 +62,11 @@ int main(){
 			    cout << "Crazy Eights selected "<< endl;
 				cout << "Select how many players will be playing?"
 					<< " or use 0 to run simulation mode\n>>";
-				userIn = getValidInput(0, 20);
+				userIn = getValidInput(0, 9);
 				sim = false;
 				if (userIn == 0){
 					cout << "How many players to sim?" << endl;
-					userIn = getValidInput(0, 20);
+					userIn = getValidInput(2, 9);
 					sim = true;
 				}
 				CrazyEight c8(userIn);
@@ -100,12 +103,14 @@ int main(){
 		case EXIT:
 		default:
 			playing = false;
+			cout << "Thank You for Playing, Good Bye!" << endl;
 			break;
 		}
 
 	} while (playing);
 	return 0;
 }
+
 
 
 int getValidInput(int min, int max){
