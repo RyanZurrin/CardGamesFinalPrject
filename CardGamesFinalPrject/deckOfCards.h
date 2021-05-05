@@ -5,13 +5,26 @@
 #include <time.h>
 
 
-struct card
-{
+
+#ifdef USE_SYMBOLS
+//typecast to char to display Suit cout<<char(DIOMONDS)
+enum symbols{
+	HEARTS =3, DIOMONDS, CLUBS, SPADES
+};
+
+#else
+enum symbols{
+	HEARTS ='H', DIOMONDS ='D', CLUBS = 'C', SPADES='S'
+};
+
+#endif
+
+struct card{
 	char suit;
 	char face;
-	card * next;
-
+	card* next;
 };
+
 
 class deckOfCards
 {
@@ -53,9 +66,9 @@ inline std::string deckOfCards::takeCard()
 	temp = topCard;
 	topCard = topCard->next;
 	delete temp;
+
 	return str;
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 inline void deckOfCards::displayDeck()
@@ -105,6 +118,7 @@ inline bool deckOfCards::shuffleDeck()
 		}
 
 	topCard = tempTopCard;
+
 	return true;
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -119,7 +133,21 @@ inline void deckOfCards::loadDeck()
 			for(c=13; c >= 1; c--) //create 13 cards per suit
 			{
 				temp = new card;
-				temp->suit = s;
+
+				switch(s){
+					case 3:
+						temp->suit = HEARTS;
+						break;
+					case 4:
+						temp->suit = DIOMONDS;
+						break;
+					case 5:
+						temp->suit = CLUBS;
+						break;
+					case 6:
+						temp->suit = SPADES;
+						break;
+				}
 
 				switch (c)
 				{
@@ -148,7 +176,7 @@ inline void deckOfCards::deleteDeck()
 	{
 		temp = topCard;
 		topCard = topCard->next;
-		//std::cout << temp->suit;
+		//cout << temp->suit;
 		delete temp;
 	}
 }
