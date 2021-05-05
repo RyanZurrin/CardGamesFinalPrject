@@ -4,7 +4,7 @@
 *
 *
 *Program Description:
-*	an unsored list of cards to use as player hand or as a
+*	an unsorted list of cards to use as player hand or as a
 	discard pile
 *************************************************************/
 
