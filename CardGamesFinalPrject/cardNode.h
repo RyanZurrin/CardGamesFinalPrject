@@ -7,12 +7,8 @@
 *	Card related structs
 *************************************************************/
 
-#pragma once
-
-//type cast to char to display Suit cout<<char(DIOMONDS)
-typedef enum Suits{
-	HEARTS = 3, DIOMONDS, CLUBS, SPADES
-}Suit;
+#ifndef CRAD_NODE_H
+#define CRAD_NODE_H
 
 struct cardNode{
 	char suit;
@@ -34,6 +30,6 @@ struct cardNode{
 			return false;
 	}
 
-
-
 };
+
+#endif
