@@ -1,5 +1,5 @@
 /***********************************************************
-*Player.h
+*player.h
 *By: Julian Stanton
 *
 *
@@ -10,6 +10,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "deckOfCards.h"
 #include "CardList.h"
 
 using namespace std;
@@ -79,8 +80,6 @@ bool Player::addCard(cardNode card){
 	return false;
 }
 
-
-//not tested yet just guessing
 bool Player::removeCard(cardNode card){
 
 	cardCount--;
@@ -88,7 +87,6 @@ bool Player::removeCard(cardNode card){
 	return 	hand.removeItem(card);
 
 }
-
 
 void Player::showAllCards(){
 
@@ -107,7 +105,7 @@ void Player::createPlayer(int handSize, int maxCards, int score){
 }
 
 Player::Player(){
-	cout << "Creating Player with default Values" << endl;
+
 	this->handSize = 7;
 	this->cardCount = 0;
 	this->maxCards = 52;
