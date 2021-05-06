@@ -550,12 +550,12 @@ inline void War::flip1()
 	showAllCards();
 	std::string p1;
 	std::string p2;
-	std::cout << "\nPlayer 1 press [F/f] to flip a card or [Q/q] "
+	std::cout << "\nPlayer 1 press any key then [enter] to flip a card or [Q/q] "
 			  << "to quit game\n>>";
 	std::cin >> flip_;
-	if (flip_ =='f' || flip_ == 'F' || flip_ == 'q' || flip_ == 'Q')
+	if (flip_ >= '0' && flip_ <= 'z')
 	{
-		if (flip_ == 'f' || flip_ == 'F')
+		if (flip_ != 'q' && flip_ != 'Q')
 		{
 			_p_.p1_.playCard();
 			_p_.p1_.discard1->peek(p1);
@@ -590,13 +590,12 @@ inline void War::flip2()
 	std::string p1;
 	std::string p2;
 	showAllCards();
-	std::cout << "\nPlayer 1 press [F/f] or [L/l] to flip a card or [Q/q] "
+	std::cout << "\nPlayer 1 press any key then [enter] to flip a card or [Q/q] "
 			  << "to quit game\n>>";
 	std::cin >> flip_;
-	if (flip_ =='f' || flip_ == 'F' || flip_ == 'l' || flip_ == 'L' ||
-		flip_ == 'q' || flip_ == 'Q')
+	if (flip_ >= '0' && flip_ <= 'z')
 	{
-		if (flip_ == 'f' || flip_ == 'F' || flip_ == 'l' || flip_ =='L')
+		if (flip_ != 'q' && flip_ != 'Q')
 		{
 
 			_p_.p1_.playCard();
@@ -620,13 +619,12 @@ inline void War::flip2()
 
 
 	//////////////////////////////////////////////////////////////////////////
-	std::cout << "\nPlayer 2 press [F/f] or [L/l] to flip a card or [Q/q]"
+	std::cout << "\nPlayer 2 press any key then [enter] to flip a card or [Q/q]"
 			  << "to quit game\n>>";
 	std::cin >> flip_;
-	if (flip_ =='f' || flip_ == 'F' || flip_ == 'l' || flip_ == 'L' ||
-		flip_ == 'q' || flip_ == 'Q')
+	if (flip_ >= '0' && flip_ <= 'z')
 	{
-		if (flip_ == 'f' || flip_ == 'F' || flip_ == 'l' || flip_ =='L')
+		if (flip_ != 'q' && flip_ != 'Q')
 		{
 			_p_.p2_.playCard();
 			_p_.p2_.discard2->peek(p2);
